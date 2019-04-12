@@ -10,6 +10,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SplashScreen extends Activity {
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -47,10 +49,18 @@ public class SplashScreen extends Activity {
                         sleep(100);
                         waited += 100;
                     }
-                    Intent intent = new Intent(SplashScreen.this,
-                            MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                    if(mAuth.getCurrentUser()!=null){
+                        Intent intent = new Intent(SplashScreen.this,
+                                MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(SplashScreen.this,
+                                FirebaseUIActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                    }
                     SplashScreen.this.finish();
                 } catch (InterruptedException e) {
                     // do nothing
