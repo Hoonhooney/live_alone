@@ -6,9 +6,94 @@
     android:layout_height="match_parent"
     tools:context=".AfterLogin">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Login Succeeded!" />
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/menu"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/menu"/>
+
+                <ImageView
+                    android:id="@+id/simpleLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="false"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/simple_logo" />
+
+                <Button
+                    android:id="@+id/search"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/option"
+                    android:background="@drawable/search"/>
+
+                <Button
+                    android:id="@+id/option"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/option"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textSize="18dp"
+            android:textColor="@color/light_olive_green"
+            android:lineSpacingExtra="0.7sp"
+            android:gravity="center"
+            tools:text="아주대 자취생들의 모임"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="25dp"
+                android:background="@drawable/recipies" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/roominfo"/>
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/schoolact"/>
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/tips"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

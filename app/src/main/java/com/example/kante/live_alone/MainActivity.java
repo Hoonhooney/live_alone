@@ -83,7 +83,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             findViewById(R.id.mainFields).setVisibility(View.VISIBLE);
             findViewById(R.id.passwordlessButtons).setVisibility(View.VISIBLE);
-            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
+            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
             if(user.isEmailVerified()){
                 Intent intent = new Intent(this,
                         AfterLogin.class);
