@@ -41,6 +41,12 @@
             style="@style/ThemeOverlay.MyTextDetail"
             tools:text="Firebase User ID: 123456789abc" />
 
+        <Button
+            android:id="@+id/btn_homefeed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go HomeFeed" />
+
     </LinearLayout>
 
 

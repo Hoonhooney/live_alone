@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/splash"
-        android:layout_width="200dp"
+        android:layout_width="225dp"
         android:layout_height="100dp"
         android:background="@drawable/splash_img" />
 
