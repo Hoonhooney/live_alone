@@ -37,7 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AfterLogin"></activity>
+        <activity android:name=".HomeFeed"></activity>
         <activity
             android:name=".FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
