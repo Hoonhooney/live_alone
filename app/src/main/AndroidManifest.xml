@@ -41,7 +41,9 @@
         <activity
             android:name=".FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
-    </application>
+        <activity android:name=".Posting"></activity>
+
+</application>
 
 
 </manifest>
