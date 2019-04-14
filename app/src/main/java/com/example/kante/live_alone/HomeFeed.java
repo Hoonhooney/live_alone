@@ -10,7 +10,7 @@ import android.widget.Button;
 
 public class HomeFeed extends AppCompatActivity {
 
-    Button btn = (Button) findViewById(R.id.add);
+    Button btn = (Button) findViewById(R.id.addpost);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

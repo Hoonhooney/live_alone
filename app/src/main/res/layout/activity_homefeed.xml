@@ -51,7 +51,7 @@
                 android:background="@drawable/option" />
 
             <Button
-                android:id="@+id/add"
+                android:id="@+id/addpost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/menu"
