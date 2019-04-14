@@ -47,6 +47,18 @@
             android:layout_height="wrap_content"
             android:text="Go HomeFeed" />
 
+        <Button
+            android:id="@+id/btn_goPosting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout" />
+
     </LinearLayout>
 
 
