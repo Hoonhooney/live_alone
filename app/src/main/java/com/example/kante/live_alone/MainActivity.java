@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             findViewById(R.id.signedInButtons).setVisibility(View.GONE);
             if(user.isEmailVerified()){
                 Intent intent = new Intent(this,
-                        AfterLogin.class);
+                        HomeFeed.class);
                 startActivity(intent);
                 finish();
             }

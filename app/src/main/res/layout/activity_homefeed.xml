@@ -20,33 +20,33 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/menu"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/menu"/>
+            <Button
+                android:id="@+id/menu"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu"/>
 
-                <ImageView
-                    android:id="@+id/simpleLogo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="false"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/simple_logo" />
+            <ImageView
+                android:id="@+id/simpleLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="false"
+                android:layout_centerInParent="true"
+                android:background="@drawable/simple_logo" />
 
-                <Button
-                    android:id="@+id/search"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/option"
-                    android:background="@drawable/search"/>
+            <Button
+                android:id="@+id/search"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/option"
+                android:background="@drawable/search"/>
 
-                <Button
-                    android:id="@+id/option"
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/option"/>
+            <Button
+                android:id="@+id/option"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/option"/>
 
         </RelativeLayout>
 
