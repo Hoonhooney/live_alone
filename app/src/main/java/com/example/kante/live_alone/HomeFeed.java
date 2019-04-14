@@ -10,12 +10,12 @@ import android.widget.Button;
 
 public class HomeFeed extends AppCompatActivity {
 
-    Button btn = (Button) findViewById(R.id.addpost);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homefeed);
-
+        Button btn = (Button) findViewById(R.id.addpost);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
