@@ -58,13 +58,13 @@ public class Posting extends AppCompatActivity {
 
     }
 
-    private void writeNewPost(String userId, String username, String title, String body) {
+    private void writeNewPost(String userId, String title, String body) {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
-        Post post = new Post(userId, username, title, body);
+        Post post = new Post(userId, title, body);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

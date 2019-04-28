@@ -1,25 +1,28 @@
 package com.example.kante.live_alone;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class HomeFeed extends AppCompatActivity {
-
-
-    final int ITEM_SIZE = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homefeed);
+
+        Fragment firstFragment = new FCook();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,firstFragment).commit();
+
+        Button bCook = (Button) findViewById(R.id.cook);
+        Button bRoom = (Button) findViewById(R.id.room);
+        Button bActivities = (Button) findViewById(R.id.activities);
+        Button bTips = (Button) findViewById(R.id.tips);
         Button btn = (Button) findViewById(R.id.addpost);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -27,30 +30,29 @@ public class HomeFeed extends AppCompatActivity {
                 goPosting();
             }
         });
-
-
-        /*피드 카드뷰 생성(Test)*/
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.feeds);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-
-        List<Item> items = new ArrayList<>();
-        Item[] item = new Item[ITEM_SIZE];
-
-        item[0] = new Item(R.drawable.splash_img, "#1", "11111111111111111111111111111111111111111111");
-        item[1] = new Item(R.drawable.splash_img, "#2", "222222222222222");
-        item[2] = new Item(R.drawable.splash_img, "#3", "333333333333333");
-        item[3] = new Item(R.drawable.splash_img, "#4", "444444444444444");
-        item[4] = new Item(R.drawable.splash_img, "#5", "555555555555555");
-
-        for (int i = 0; i < ITEM_SIZE; i++) {
-            items.add(item[i]);
-        }
-
-        recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_homefeed));
     }
 
+    public void selectCategory(View view){
+        Fragment fr = null;
+        switch(view.getId()){
+            case R.id.cook:
+                fr = new FCook();
+                break;
+            case R.id.room:
+                fr = new FRoom();
+                break;
+            case R.id.activities:
+                fr = new FActivities();
+                break;
+            case R.id.tips:
+                fr = new FTips();
+                break;
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.fragment_container, fr);
+        ft.commit();
+    }
     private void goPosting(){
         Intent intent = new Intent(this, Posting.class);
         startActivity(intent);

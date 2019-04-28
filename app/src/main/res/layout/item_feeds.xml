@@ -46,11 +46,11 @@
                     android:text="Write here" />
             </LinearLayout>
             <TextView
-                android:id="@+id/nickname"
+                android:id="@+id/userId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/postedImage"
-                android:text="Nickname"
+                android:text="UserID"
                 android:layout_margin="5dp"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
