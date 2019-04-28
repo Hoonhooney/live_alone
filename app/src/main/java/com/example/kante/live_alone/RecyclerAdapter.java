@@ -15,12 +15,12 @@ import java.util.List;
 //피드 어댑터
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
     Context context;
-    List<Item> items;
+    List<Post> posts;
     int item_layout;
 
-    public RecyclerAdapter(Context context, List<Item> items, int item_layout) {
+    public RecyclerAdapter(Context context, List<Post> posts, int item_layout) {
         this.context = context;
-        this.items = items;
+        this.posts = posts;
         this.item_layout = item_layout;
     }
 
@@ -32,29 +32,29 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Item item = items.get(position);
-        Drawable drawable = ContextCompat.getDrawable(context, item.getImage());
-        //holder.image.setBackground(drawable);
-        holder.title.setText(item.getTitle());
-        holder.detail.setText(item.getDetail());
+        final Post post = posts.get(position);
+        holder.title.setText(post.getTitle());
+        holder.body.setText(post.getBody());
+        holder.userId.setText(post.getUid());
     }
 
     @Override
     public int getItemCount() {
-        return this.items.size();
+        return this.posts.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
         TextView title;
-        TextView detail;
+        TextView body;
+        TextView userId;
         CardView cardview;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.image);
+            //image = (ImageView) itemView.findViewById(R.id.image);
             title = (TextView) itemView.findViewById(R.id.title);
-            detail = (TextView) itemView.findViewById(R.id.detail);
+            body = (TextView) itemView.findViewById(R.id.detail);
+            userId = (TextView) itemView.findViewById(R.id.userId);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
         }
     }

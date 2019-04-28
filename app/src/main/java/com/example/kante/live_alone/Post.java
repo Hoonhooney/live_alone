@@ -8,33 +8,40 @@ import java.util.Map;
 
 @IgnoreExtraProperties
 public class Post {
+    public String imageURL;
     public String uid;
-    public String author;
     public String title;
     public String body;
-    public int starCount = 0;
-    public Map<String, Boolean> stars = new HashMap<>();
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Post(String uid, String author, String title, String body) {
+    public Post(String uid, String title, String body) {
         this.uid = uid;
-        this.author = author;
         this.title = title;
         this.body = body;
+    }
+
+    String getImage() {
+        return this.imageURL;
+    }
+    String getTitle() {
+        return this.title;
+    }
+    String getBody() {
+        return this.body;
+    }
+    String getUid() {
+        return this.uid;
     }
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
-        result.put("author", author);
         result.put("title", title);
         result.put("body", body);
-        result.put("starCount", starCount);
-        result.put("stars", stars);
 
         return result;
     }
