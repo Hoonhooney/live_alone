@@ -1,12 +1,12 @@
 package com.example.kante.live_alone;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
-import com.example.kante.live_alone.R;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,15 +17,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import android.support.design.widget.Snackbar;
 import com.google.firebase.auth.FirebaseAuthActionCodeException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 
-
-
+/**
+ * Demonstrate Firebase Authentication without a password, using a link sent to an
+ * email address.
+ */
 public class MainActivity extends BaseActivity implements View.OnClickListener {
-    private static final String TAG = "EMAIL_LINK_AUTHENTICATION";
+
+    private static final String TAG = "PasswordlessSignIn";
     private static final String KEY_PENDING_EMAIL = "key_pending_email";
 
     private FirebaseAuth mAuth;
@@ -45,6 +47,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         mSendLinkButton = findViewById(R.id.passwordlessSendEmailButton);
@@ -53,7 +56,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mEmailField = findViewById(R.id.fieldEmail);
         mStatusText = findViewById(R.id.status);
-
 
         mSendLinkButton.setOnClickListener(this);
         mSignInButton.setOnClickListener(this);
@@ -68,6 +70,47 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         // Check if the Intent that started the Activity contains an email sign-in link.
         checkIntent(getIntent());
 
+        Button goHomeFeed = findViewById(R.id.btn_homefeed);
+        goHomeFeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_gohome();
+            }
+        });
+
+        Button goPosting = findViewById(R.id.btn_goPosting);
+        goPosting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_goPosting();
+            }
+        });
+
+        Button logOut = findViewById(R.id.btn_logout);
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                btn_gologin();
+            }
+        });
+    }
+
+    public void btn_gologin(){
+        Intent intent = new Intent(this, FirebaseUIActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void btn_gohome(){
+        Intent intent = new Intent(this, HomeFeed.class);
+        startActivity(intent);
+        finish();
+    }
+    public void btn_goPosting(){
+        Intent intent = new Intent(this, Posting.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -81,16 +124,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mStatusText.setText(getString(R.string.passwordless_status_fmt,
                     user.getEmail(), user.isEmailVerified()));
 
-            findViewById(R.id.mainFields).setVisibility(View.GONE);
-            findViewById(R.id.passwordlessButtons).setVisibility(View.GONE);
-            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
+            findViewById(R.id.mainFields).setVisibility(View.VISIBLE);
+            findViewById(R.id.passwordlessButtons).setVisibility(View.VISIBLE);
+            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
+            if(user.isEmailVerified()){
+                goHomeFeed();
+            }
         } else {
             findViewById(R.id.mainFields).setVisibility(View.VISIBLE);
             findViewById(R.id.passwordlessButtons).setVisibility(View.VISIBLE);
             findViewById(R.id.signedInButtons).setVisibility(View.GONE);
         }
     }
-
+    private void goHomeFeed(){
+        Intent intent = new Intent(this, HomeFeed.class);
+        startActivity(intent);
+        finish();
+    }
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -103,12 +153,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         outState.putString(KEY_PENDING_EMAIL, mPendingEmail);
     }
 
+    /**
+     * Check to see if the Intent has an email link, and if so set up the UI accordingly.
+     * This can be called from either onCreate or onNewIntent, depending on how the Activity
+     * was launched.
+     */
     private void checkIntent(@Nullable Intent intent) {
         if (intentHasEmailLink(intent)) {
             mEmailLink = intent.getData().toString();
+
             mStatusText.setText(R.string.status_link_found);
             mSendLinkButton.setEnabled(false);
             mSignInButton.setEnabled(true);
+
         } else {
             mStatusText.setText(R.string.status_email_not_sent);
             mSendLinkButton.setEnabled(true);
@@ -130,36 +187,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         return false;
     }
 
-
-    private void showSnackbar(String message) {
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.passwordlessSendEmailButton:
-                onSendLinkClicked();
-                break;
-            case R.id.passwordlessSignInButton:
-                onSignInClicked();
-                break;
-            case R.id.signOutButton:
-                onSignOutClicked();
-                break;
-        }
-    }
-
-    private void onSendLinkClicked() {
-        String email = mEmailField.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Email must not be empty.");
-            return;
-        }
-
-        sendSignInLink(email);
-    }
-
+    /**
+     * Send an email sign-in link to the specified email.
+     */
     private void sendSignInLink(String email) {
         ActionCodeSettings settings = ActionCodeSettings.newBuilder()
                 .setAndroidPackageName(
@@ -167,14 +197,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         false, /* install if not available? */
                         null   /* minimum app version */)
                 .setHandleCodeInApp(true)
-                .setUrl("https://www.naver.com/")
+                .setUrl("https://auth.example.com/emailSignInLink")
                 .build();
 
         hideKeyboard(mEmailField);
         showProgressDialog();
 
-        final String email_new=email;
-        mAuth.sendSignInLinkToEmail(email_new, settings)
+        final String email_new = email;
+        mAuth.sendSignInLinkToEmail(email, settings)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -199,16 +229,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 });
     }
 
-    private void onSignInClicked() {
-        String email = mEmailField.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Email must not be empty.");
-            return;
-        }
-
-        signInWithEmailLink(email, mEmailLink);
-    }
-
+    /**
+     * Sign in using an email address and a link, the link is passed to the Activity
+     * from the dynamic link contained in the email.
+     */
     private void signInWithEmailLink(String email, String link) {
         Log.d(TAG, "signInWithLink:" + link);
 
@@ -239,6 +263,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 });
     }
 
+    private void onSendLinkClicked() {
+        String email = mEmailField.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Email must not be empty.");
+            return;
+        }
+
+        sendSignInLink(email);
+    }
+
+    private void onSignInClicked() {
+        String email = mEmailField.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Email must not be empty.");
+            return;
+        }
+
+        signInWithEmailLink(email, mEmailLink);
+    }
+
     private void onSignOutClicked() {
         mAuth.signOut();
 
@@ -246,4 +290,37 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mStatusText.setText(R.string.status_email_not_sent);
     }
 
+//    private void updateUI(@Nullable FirebaseUser user) {
+//        if (user != null) {
+//            mStatusText.setText(getString(R.string.passwordless_status_fmt,
+//                    user.getEmail(), user.isEmailVerified()));
+//
+//            findViewById(R.id.mainFields).setVisibility(View.GONE);
+//            findViewById(R.id.passwordlessButtons).setVisibility(View.GONE);
+//            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
+//        } else {
+//            findViewById(R.id.mainFields).setVisibility(View.VISIBLE);
+//            findViewById(R.id.passwordlessButtons).setVisibility(View.VISIBLE);
+//            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
+//        }
+//    }
+
+    private void showSnackbar(String message) {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.passwordlessSendEmailButton:
+                onSendLinkClicked();
+                break;
+            case R.id.passwordlessSignInButton:
+                onSignInClicked();
+                break;
+            case R.id.signOutButton:
+                onSignOutClicked();
+                break;
+        }
+    }
 }
