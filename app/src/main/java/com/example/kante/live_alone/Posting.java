@@ -15,8 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,6 +33,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -48,8 +53,9 @@ public class Posting extends AppCompatActivity {
     private FirebaseFirestore mFirestore;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private String imagePath;
     private Uri filePath;
-    private Button btnChoose, btnUpload;
+    private Button btnChoose;
     private ImageView imageView;
 
 
@@ -60,7 +66,7 @@ public class Posting extends AppCompatActivity {
         mFirestore = FirebaseFirestore.getInstance();
 
         //For storage
-        storage = FirebaseStorage.getInstance("gs://hcslivealone.appspot.com");
+        storage = FirebaseStorage.getInstance();
         // Create a storage reference from our app
         storageReference = storage.getReference();
 
@@ -86,8 +92,8 @@ public class Posting extends AppCompatActivity {
                     writeNewPost(uid, username, text_title.getText().toString(), text_context.getText().toString());
                     finish();
                 }else{
-                    writeNewPost(uid, username, text_title.getText().toString(), text_context.getText().toString());
                     uploadImage();
+                    writeNewPost(uid, username, text_title.getText().toString(), text_context.getText().toString());
                 }
             }
         });
@@ -121,6 +127,14 @@ public class Posting extends AppCompatActivity {
         docData.put("email", email);
         docData.put("title",title);
         docData.put("body",body);
+        if(imagePath!=null){
+            docData.put("image_url",imagePath);
+        }
+        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddhhmmss");
+        String format = s.format(new Date());
+
+        docData.put("created_at",format);
+
 
         batch.set(posts, docData);
         batch.commit();
@@ -168,7 +182,8 @@ public class Posting extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            final StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            imagePath = ref.getPath();
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
