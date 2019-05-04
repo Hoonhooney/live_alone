@@ -106,11 +106,7 @@ public class Posting extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
     }
-
 
     private void getUserInfo(FirebaseUser user){
         uid = user.getUid();
@@ -134,11 +130,8 @@ public class Posting extends AppCompatActivity {
         String format = s.format(new Date());
 
         docData.put("created_at",format);
-
-
         batch.set(posts, docData);
         batch.commit();
-
     }
 
     private void launchCamera() {
@@ -174,7 +167,6 @@ public class Posting extends AppCompatActivity {
     }
 
     private void uploadImage() {
-
 
         if(filePath != null)
         {
