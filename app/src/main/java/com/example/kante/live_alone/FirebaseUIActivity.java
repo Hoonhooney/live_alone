@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,6 @@ public class FirebaseUIActivity extends BaseActivity implements
     private static final String TAG = "EmailPassword";
 
     private TextView mStatusTextView;
-    private TextView mDetailTextView;
     private EditText mEmailField;
     private EditText mPasswordField;
 
@@ -53,7 +53,6 @@ public class FirebaseUIActivity extends BaseActivity implements
 
         // Views
         mStatusTextView = findViewById(R.id.status);
-        mDetailTextView = findViewById(R.id.detail);
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
 
@@ -67,6 +66,7 @@ public class FirebaseUIActivity extends BaseActivity implements
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
     }
 
     // [START on_start_check_user]
@@ -172,13 +172,13 @@ public class FirebaseUIActivity extends BaseActivity implements
 
                         if (task.isSuccessful()) {
                             Toast.makeText(FirebaseUIActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
+                                     user.getEmail() + "로 인증 이메일을 보냈습니다!",
                                     Toast.LENGTH_SHORT).show();
                             goMainActivity();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
                             Toast.makeText(FirebaseUIActivity.this,
-                                    "Failed to send verification email.",
+                                    "이메일 인증 메일을 보내는 데 실패했습니다.",
                                     Toast.LENGTH_SHORT).show();
                         }
                         // [END_EXCLUDE]
@@ -220,21 +220,29 @@ public class FirebaseUIActivity extends BaseActivity implements
         if (user != null) {
             mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
                     user.getEmail(), user.isEmailVerified()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
             findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
 
             findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());
+            if(user.isEmailVerified()){
+                Log.d("qwdqwdwqdqddw","Qwqwaaaa");
+                goHomeFeed();
+            }
         } else {
-            mStatusTextView.setText(R.string.signed_out);
-            mDetailTextView.setText(null);
-
+//            mStatusTextView.setText(R.string.signed_out);
+            mStatusTextView.setText("로그인을 해 주세요!");
             findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.VISIBLE);
             findViewById(R.id.signedInButtons).setVisibility(View.GONE);
         }
+    }
+
+
+    private void goHomeFeed(){
+        Intent intent = new Intent(this, HomeFeed.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
