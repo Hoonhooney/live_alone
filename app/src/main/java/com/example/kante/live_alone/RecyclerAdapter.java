@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
@@ -28,13 +29,14 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+
 //피드 어댑터
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
-    Context context;
-    List<Post> posts;
-    int item_layout;
-    FirebaseStorage storage;
-    StorageReference storageRef;
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+    private Context context;
+    private List<Post> posts;
+    private int item_layout;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 //    Bitmap bitmap;
 
     public RecyclerAdapter(Context context, List<Post> posts, int item_layout) {
@@ -58,65 +60,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.title.setText(post.getTitle());
         holder.body.setText(post.getBody());
         holder.userId.setText(post.getUid());
-//        if(post.getImageURL() != null){
-//            String filepath = post.image_url;
-//            Glide.with(this.context).using()
-//            storageRef.child(filepath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                @Override
-//                public void onSuccess(Uri uri) {
-//                }
-//            });
-//            storageRef.child(filepath).getMetadata()
-//                    .addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
-//                        @Override
-//                        public void onSuccess(StorageMetadata storageMetadata) {
-//
-//                        }
-//                    });
-//            ImageLoaderTask task = new ImageLoaderTask(holder.image, "https://firebasestorage.googleapis.com/v0/b/hcslivealone.appspot.com/o/images%2F08ecb9ef-3f84-44ff-93bf-b2a1cf853e6a?alt=media&token=4595b31c-f05f-4f8a-9a35-8841c6eb1573");
-//            task.onPostExecute(task.doInBackground());
+        if (post.getImageURL() != null) {
+            StorageReference path = storageRef.child(post.image_url);
+            Glide.with(this.context).load(path).into(holder.image);
+
         }
-//            ImageLoaderTask task = new ImageLoaderTask(holder.image, "gs://hcslivealone.appspot.com"+post.image_url);
-//            task.onPostExecute(task.doInBackground());
-//        }
-//        if(post.getImageURL() != null){
-//            holder.image.setImageBitmap(post.urlToBitmap());
-//        }
-//        if(post.getImageURL() != null){
-//            final String iu = post.getImageURL();
-//            Thread mThread = new Thread(){
-//                @Override
-//                public void run(){
-//                    try{
-//                        Log.d("image", "abc"+iu);
-//                        URL url = new URL(post.getImageURL());
-//                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-//                        conn.setDoInput(true);
-//                        conn.connect();
-//                        InputStream is = conn.getInputStream();
-//                        bitmap = BitmapFactory.decodeStream(is);
-//                    } catch(IOException ex){}
-//                }
-//            };
-//            mThread.start();
-//            try{
-//                mThread.join();
-//                holder.image.setImageBitmap(bitmap);
-//            }catch(InterruptedException e){}catch (NullPointerException ne){Log.d("exception", "NullPointer");}
-//        }
     }
+
+
 
     @Override
     public int getItemCount() {
         return this.posts.size();
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        TextView body;
-        TextView userId;
-        CardView cardview;
-        ImageView image;
+        private TextView title;
+        private TextView body;
+        private TextView userId;
+        private CardView cardview;
+        private ImageView image;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -127,4 +91,5 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             cardview = (CardView) itemView.findViewById(R.id.cardview);
         }
     }
+
 }
