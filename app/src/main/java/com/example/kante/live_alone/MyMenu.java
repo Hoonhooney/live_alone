@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ public class MyMenu extends AppCompatActivity {
     private TextView text_email;
     private TextView text_nickname;
     private User user;
+    private FirebaseAuth fbAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,22 +75,18 @@ public class MyMenu extends AppCompatActivity {
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+                fbAuth = FirebaseAuth.getInstance();
                 fbAuth.signOut();
-                restartApp(null);
-
+                Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
+                finishAffinity();
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
     }
 
-    public static void restartApp(Context context) {
-        Intent mStartActivity = new Intent(context, SplashScreen.class);
-        int mPendingIntentId = 123456;
-        PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-        System.exit(0);
+    public void restartApp(Context context) {
     }
 
     private void getUser(){
