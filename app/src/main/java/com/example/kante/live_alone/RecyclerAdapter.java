@@ -50,9 +50,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.userId.setText(post.getUid());
         if (post.getImageURL() != null) {
             StorageReference path = storageRef.child(post.image_url);
-            Glide.with(this.context).load(path).into(holder.image);
+            Glide.with(this.context).load(path).skipMemoryCache(true).into(holder.image);
+            holder.url = post.getImageURL();
         }
         else
+            holder.url = null;
             holder.image.setImageResource(R.drawable.splash_img);
     }
 
@@ -68,6 +70,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private TextView userId;
         private CardView cardview;
         private ImageView image;
+        private String url;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -86,6 +89,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     intent.putExtra("TITLE", pTitle);
                     intent.putExtra("BODY", pBody);
                     intent.putExtra("UID", pUid);
+                    intent.putExtra("URL", url);
                     context.startActivity(intent);
                 }
             });

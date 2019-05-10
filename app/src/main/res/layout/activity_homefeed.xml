@@ -41,16 +41,8 @@
                 android:id="@+id/search"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/option"
-                android:background="@drawable/search" />
-
-            <Button
-                android:id="@+id/option"
-                android:layout_width="25dp"
-                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:background="@drawable/option" />
-
+                android:background="@drawable/search" />
 
         </RelativeLayout>
 
