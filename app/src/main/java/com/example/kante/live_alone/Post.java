@@ -50,30 +50,6 @@ public class Post {
         result.put("title", title);
         result.put("body", body);
         result.put("image_url", image_url);
-
         return result;
     }
-//    public Bitmap urlToBitmap(){
-//        if(this.getImageURL() != null){
-//            final String iu = this.getImageURL();
-//            Thread mThread = new Thread(){
-//                @Override
-//                public void run(){
-//                    try{
-//                        Log.d("image", "abc"+iu);
-//                        URL url = new URL(iu);
-//                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-//                        conn.setDoInput(true);
-//                        conn.connect();
-//                        InputStream is = conn.getInputStream();
-//                        bitmap = BitmapFactory.decodeStream(is);
-//                    } catch(IOException ex){}
-//                }
-//            };
-//            mThread.start();
-//            return bitmap;
-//        }
-//        else
-//            return null;
-//    }
 }

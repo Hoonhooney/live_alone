@@ -43,6 +43,7 @@
             android:label="@string/label_firebase_ui" />
         <activity android:name=".Posting" />
         <activity android:name=".MyMenu"></activity>
+        <activity android:name=".DetailedPost"></activity>
     </application>
 
 </manifest>

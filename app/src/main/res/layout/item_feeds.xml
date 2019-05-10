@@ -18,8 +18,7 @@
             <ImageView
                 android:id="@+id/postedImage"
                 android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:background="@drawable/splash_img" />
+                android:layout_height="150dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,17 +40,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="99dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
                     android:text="Write here" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/userId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/postedImage"
-                android:text="UserID"
-                android:layout_margin="5dp"/>
+                android:layout_margin="5dp"
+                android:text="UserID" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
