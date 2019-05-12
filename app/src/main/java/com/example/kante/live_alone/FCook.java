@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,14 +130,16 @@ public class FCook extends Fragment {
                             return;
                         }else{
                             types = queryDocumentSnapshots.toObjects(Post.class);
-                            Log.d("qweqweqweqwe",types.get(0).getBody());
+                            types.sort(new CustomComparator().reversed());
                             if(types.size() < 10) {
                                 for(int i = 0; i < types.size(); i++)
-                                    mArrayList.add(types.get(i));
+                                        mArrayList.add(types.get(i));
+
                             }
                             else{
                                 for(int j = 0; j < 10; j++)
-                                    mArrayList.add(types.get(j));
+                                        mArrayList.add(types.get(j));
+
                             }
                             recyclerView.setAdapter(mAdapter);
                         }
@@ -145,7 +148,15 @@ public class FCook extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Log.d("qweqweqwe","아무내용이없습니다");
                     }
                 });
+    }
+
+    public class CustomComparator implements Comparator<Post> {
+        @Override
+        public int compare(Post o1, Post o2) {
+            return o1.getCreated_at().compareTo(o2.getCreated_at());
+        }
     }
 }

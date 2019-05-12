@@ -21,6 +21,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class FRoom extends Fragment {
@@ -120,14 +121,16 @@ public class FRoom extends Fragment {
                             return;
                         }else{
                             types = queryDocumentSnapshots.toObjects(Post.class);
-                            Log.d("qweqweqweqwe",types.get(0).getBody());
+                            types.sort(new CustomComparator().reversed());
                             if(types.size() < 10) {
                                 for(int i = 0; i < types.size(); i++)
                                     mArrayList.add(types.get(i));
+
                             }
                             else{
                                 for(int j = 0; j < 10; j++)
                                     mArrayList.add(types.get(j));
+
                             }
                             recyclerView.setAdapter(mAdapter);
                         }
@@ -138,5 +141,12 @@ public class FRoom extends Fragment {
                     public void onFailure(@NonNull Exception e) {
                     }
                 });
+    }
+
+    public class CustomComparator implements Comparator<Post> {
+        @Override
+        public int compare(Post o1, Post o2) {
+            return o1.getCreated_at().compareTo(o2.getCreated_at());
+        }
     }
 }
