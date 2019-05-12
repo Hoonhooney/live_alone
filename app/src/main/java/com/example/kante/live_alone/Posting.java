@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,7 +56,7 @@ public class Posting extends AppCompatActivity {
     private StorageReference storageReference;
     private String imagePath;
     private Uri filePath;
-    private Button btnChoose;
+    private BootstrapButton btnChoose;
     private ImageView imageView;
 
 
@@ -70,7 +71,7 @@ public class Posting extends AppCompatActivity {
         // Create a storage reference from our app
         storageReference = storage.getReference();
 
-        btnChoose = (Button) findViewById(R.id.btnChoose);
+        btnChoose = (BootstrapButton) findViewById(R.id.btnChoose);
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +99,8 @@ public class Posting extends AppCompatActivity {
             }
         });
 
+        Log.d("asdasdasd",getIntent().getStringExtra("Category"));
+
         Button mymenu = findViewById(R.id.gotomymenu);
         mymenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +126,8 @@ public class Posting extends AppCompatActivity {
         docData.put("email", email);
         docData.put("title",title);
         docData.put("body",body);
+        docData.put("category",getIntent().getStringExtra("Category"));
+
         if(imagePath!=null){
             docData.put("image_url",imagePath);
         }
@@ -163,7 +168,9 @@ public class Posting extends AppCompatActivity {
             {
                 e.printStackTrace();
             }
+            btnChoose.setVisibility(View.INVISIBLE);
         }
+
     }
 
     private void uploadImage() {
