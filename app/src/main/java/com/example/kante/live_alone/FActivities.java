@@ -58,8 +58,8 @@ public class FActivities extends Fragment {
         recyclerView.setHasFixedSize(true);
         mAdapter = new RecyclerAdapter(getContext(), mArrayList, R.layout.fragment_activities);
 
-        //데이터 정렬
-        getListItems();
+//        //데이터 정렬
+//        getListItems();
 
         //스크롤
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -88,6 +88,19 @@ public class FActivities extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        getListItems();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(pgsBar != null)
+            pgsBar.setVisibility(ProgressBar.GONE);
+    }
+
     private void fetchData() {
         pgsBar.setVisibility(ProgressBar.VISIBLE);
         new Handler().postDelayed(new Runnable() {
@@ -101,7 +114,6 @@ public class FActivities extends Fragment {
                         pgsBar.setVisibility(ProgressBar.GONE);
                     }
                     else{
-                        Toast.makeText(getContext(),"마지막 게시글입니다.",Toast.LENGTH_SHORT).show();
                         pgsBar.setVisibility(ProgressBar.GONE);
                         return;
                     }
@@ -110,9 +122,10 @@ public class FActivities extends Fragment {
         }, 1000);
     }
 
-    private void getListItems(){
+    public void getListItems(){
+        if(!mArrayList.isEmpty())
+            mArrayList.clear();
         Log.d("qpoqop","whiatqwdqw?");
-
         fs.collection("posts").whereEqualTo("category","FActivities").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
