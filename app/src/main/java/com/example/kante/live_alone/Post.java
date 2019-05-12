@@ -20,6 +20,8 @@ public class Post {
     public String user_id;
     public String title;
     public String body;
+    public String category;
+    public String created_at;
     public Bitmap bitmap;
 
     public Post() {
@@ -42,6 +44,8 @@ public class Post {
         return this.body;
     }
     String getUid() { return this.user_id;}
+    String getCategory() {return this.category;}
+    String getCreated_at() {return this.created_at;}
 
     @Exclude
     public Map<String, Object> toMap() {
