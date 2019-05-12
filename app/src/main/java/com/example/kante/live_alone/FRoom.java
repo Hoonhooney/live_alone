@@ -1,19 +1,39 @@
 package com.example.kante.live_alone;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FRoom extends Fragment {
 
-    final int ITEM_SIZE = 5;
+    private FirebaseFirestore fs;
+    //    static final int LIMIT = 50;
+    private ArrayList<Post> mArrayList = new ArrayList<>();
+    private List<Post> types;
+    RecyclerView recyclerView;
+    RecyclerAdapter mAdapter;
+    boolean isScrolling = false;
+    int currentItems, totalItems, scrollOutItems;
+    ProgressBar pgsBar;
 
     public FRoom() {
         // Required empty public constructor
@@ -25,28 +45,98 @@ public class FRoom extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_room, container, false);
 
-        /*피드 카드뷰 생성(Test)*/
-        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.feeds_room);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        FirebaseFirestore.setLoggingEnabled(true);
+        fs = FirebaseFirestore.getInstance();
+
+        pgsBar = (ProgressBar) v.findViewById(R.id.progress_bar);
+
+        //피드 카드뷰 생성
+        recyclerView = (RecyclerView) v.findViewById(R.id.feeds_room);
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
+        mAdapter = new RecyclerAdapter(getContext(), mArrayList, R.layout.fragment_room);
 
-        List<Post> items = new ArrayList<>();
-        Post[] item = new Post[ITEM_SIZE];
+        //데이터 정렬
+        getListItems();
 
-        item[0] = new Post("id1", "Title1", "roomroomroomrooom");
-        item[1] = new Post("id2", "Title2", "roomroomroomrooom");
-        item[2] = new Post("id3", "Title3", "roomroomroomrooom");
-        item[3] = new Post("id4", "Title4", "roomroomroomrooom");
-        item[4] = new Post("id5", "Title5", "roomroomroomrooom");
+        //스크롤
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                    isScrolling = true;
+                }
+            }
 
-        for (int i = 0; i < ITEM_SIZE; i++) {
-            items.add(item[i]);
-        }
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                currentItems = layoutManager.getChildCount();
+                totalItems = layoutManager.getItemCount();
+                scrollOutItems = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
 
-        recyclerView.setAdapter(new RecyclerAdapter(v.getContext(), items, R.layout.fragment_room));
+                if(isScrolling && (currentItems + scrollOutItems == totalItems)){
+                    isScrolling = false;
+                    fetchData();
+                }
+            }
+        });
 
         return v;
     }
 
+    private void fetchData() {
+        pgsBar.setVisibility(ProgressBar.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int k = mArrayList.size();
+                for (int i =0 ; i < 5; i++){
+                    if(k + i < types.size()){
+                        mArrayList.add(types.get(k + i));
+                        mAdapter.notifyDataSetChanged();
+                        pgsBar.setVisibility(ProgressBar.GONE);
+                    }
+                    else{
+                        Toast.makeText(getContext(),"마지막 게시글입니다.",Toast.LENGTH_SHORT).show();
+                        pgsBar.setVisibility(ProgressBar.GONE);
+                        return;
+                    }
+                }
+            }
+        }, 1000);
+    }
+
+    private void getListItems(){
+        Log.d("qpoqop","whiatqwdqw?");
+        fs.collection("posts").whereEqualTo("category","FRoom").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.isEmpty()){
+                            Log.d("qpoqop","whiat?");
+                            return;
+                        }else{
+                            types = queryDocumentSnapshots.toObjects(Post.class);
+                            Log.d("qweqweqweqwe",types.get(0).getBody());
+                            if(types.size() < 10) {
+                                for(int i = 0; i < types.size(); i++)
+                                    mArrayList.add(types.get(i));
+                            }
+                            else{
+                                for(int j = 0; j < 10; j++)
+                                    mArrayList.add(types.get(j));
+                            }
+                            recyclerView.setAdapter(mAdapter);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+    }
 }
