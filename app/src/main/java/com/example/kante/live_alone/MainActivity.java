@@ -21,6 +21,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthActionCodeException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * Demonstrate Firebase Authentication without a password, using a link sent to an
@@ -32,7 +35,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String KEY_PENDING_EMAIL = "key_pending_email";
 
     private FirebaseAuth mAuth;
-
+    private FirebaseFirestore firebaseFirestore;
 //    private Button mSendLinkButton;
 //    private Button mSignInButton;
 //    private Button mSignOutButton;
@@ -50,6 +53,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
 //        mSendLinkButton = findViewById(R.id.passwordlessSendEmailButton);
 //        mSignInButton = findViewById(R.id.passwordlessSignInButton);
@@ -71,7 +75,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         // Check if the Intent that started the Activity contains an email sign-in link.
         checkIntent(getIntent());
 
-        Button goHomeFeed = findViewById(R.id.btn_gohomefed);
+        Button goHomeFeed = findViewById(R.id.btn_goEnterdetailed);
         goHomeFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +144,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
         }
     }
+
+
     private void goHomeFeed(){
         Intent intent = new Intent(this, HomeFeed.class);
         startActivity(intent);
