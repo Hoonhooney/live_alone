@@ -11,10 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
-        android:background="@color/light_olive_green"
+        android:background="@color/grey_300"
         android:orientation="horizontal"
         android:outlineAmbientShadowColor="@color/bootstrap_brand_info"
         android:outlineProvider="bounds">
+
+        <ImageButton
+            android:id="@+id/xButtoninPosting"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:background="@color/grey_300"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/xbuttonimage" />
 
         <com.beardedhen.androidbootstrap.BootstrapLabel
             android:layout_width="wrap_content"
@@ -48,7 +56,7 @@
                     android:id="@+id/btnChoose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="right|center"
                     android:text="사진 업로드하기"
                     app:bootstrapBrand="primary"
                     app:bootstrapSize="lg"
@@ -56,13 +64,14 @@
                     app:roundedCorners="true" />
 
                 <ImageView
-                    android:id="@+id/imgView"
+                    android:id="@+id/postImage"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -83,14 +92,14 @@
             </com.beardedhen.androidbootstrap.BootstrapButtonGroup>
 
             <com.beardedhen.androidbootstrap.BootstrapWell
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:bootstrapSize="sm">
 
                 <EditText
                     android:id="@+id/text_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="제목을 입력하세요"
@@ -102,7 +111,7 @@
             </com.beardedhen.androidbootstrap.BootstrapWell>
 
             <com.beardedhen.androidbootstrap.BootstrapWell
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
 
@@ -110,11 +119,11 @@
 
                 <EditText
                     android:id="@+id/text_context"
-                    android:layout_width="279dp"
-                    android:layout_height="196dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="0dp"
                     android:layout_marginBottom="0dp"
                     android:ems="10"
                     android:hint="내용을 입력하세요"

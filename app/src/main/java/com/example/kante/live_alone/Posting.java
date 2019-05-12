@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,7 +79,7 @@ public class Posting extends AppCompatActivity {
                 chooseImage();
             }
         });
-        imageView = (ImageView) findViewById(R.id.imgView);
+        imageView = (ImageView) findViewById(R.id.postImage);
 
         postingButton = findViewById(R.id.btn_posting);
         text_context = findViewById(R.id.text_context);
@@ -107,6 +108,14 @@ public class Posting extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Posting.this, MyMenu.class);
                 startActivity(intent);
+            }
+        });
+
+        ImageButton xButton = findViewById(R.id.xButtoninPosting);
+        xButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
@@ -169,6 +178,7 @@ public class Posting extends AppCompatActivity {
                 e.printStackTrace();
             }
             btnChoose.setVisibility(View.INVISIBLE);
+            imageView.setVisibility(View.VISIBLE);
         }
 
     }
