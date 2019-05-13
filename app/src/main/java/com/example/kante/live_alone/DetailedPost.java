@@ -1,5 +1,6 @@
 package com.example.kante.live_alone;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class DetailedPost extends AppCompatActivity {
     private TextView dTitle;
     private TextView dBody;
     private TextView dUid;
+    private TextView dTime;
     private String dUrl;
     private StorageReference sr;
 //    private Post p;
@@ -44,10 +46,13 @@ public class DetailedPost extends AppCompatActivity {
         dTitle = findViewById(R.id.dp_title);
         dBody = findViewById(R.id.dp_body);
         dUid = findViewById(R.id.dp_user_id);
+        dTime = findViewById(R.id.dp_posted_time);
 
-        dTitle.setText(getIntent().getStringExtra("TITLE"));
-        dBody.setText(getIntent().getStringExtra("BODY"));
-        dUid.setText(getIntent().getStringExtra("UID"));
+        Intent intent = getIntent();
+        dTitle.setText(intent.getStringExtra("TITLE"));
+        dBody.setText(intent.getStringExtra("BODY"));
+        dUid.setText(intent.getStringExtra("UID"));
+        dTime.setText(intent.getStringExtra("TIME"));
         dUrl = getIntent().getStringExtra("URL");
 
         fs = FirebaseStorage.getInstance();
