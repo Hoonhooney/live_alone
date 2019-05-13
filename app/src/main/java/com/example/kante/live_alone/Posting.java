@@ -140,7 +140,7 @@ public class Posting extends AppCompatActivity {
         if(imagePath!=null){
             docData.put("image_url",imagePath);
         }
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddhhmmss");
+        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
         String format = s.format(new Date());
 
         docData.put("created_at",format);
