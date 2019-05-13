@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,27 +49,32 @@
         <TextView
             android:id="@+id/school"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
             android:lineSpacingExtra="0.7sp"
+            android:text="아주대 자취생들의 모임"
+            android:textAlignment="gravity"
             android:textColor="@color/light_olive_green"
+            android:textIsSelectable="false"
             android:textSize="18sp"
-            android:visibility="visible"
-            tools:text="아주대 자취생들의 모임" />
+            android:textStyle="bold" />
 
         <HorizontalScrollView
             android:id="@+id/categories"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
                     <Button
@@ -142,8 +147,9 @@
         android:id="@+id/refresh"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/refresh"
+        android:layout_above="@id/addpost"
         android:layout_alignRight="@id/fragment_container"
-        android:layout_above="@id/addpost"/>
+        android:background="@drawable/refresh"
+        android:onClick="refresh" />
 
 </RelativeLayout>
