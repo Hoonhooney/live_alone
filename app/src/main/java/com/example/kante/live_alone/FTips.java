@@ -123,28 +123,25 @@ public class FTips extends Fragment {
     }
 
     public void getListItems(){
-        if(!mArrayList.isEmpty())
+        if (!mArrayList.isEmpty())
             mArrayList.clear();
-        Log.d("qpoqop","whiatqwdqw?");
-        fs.collection("posts").whereEqualTo("category","FTips").get()
+        Log.d("qpoqop", "whiatqwdqw?");
+        fs.collection("posts").whereEqualTo("category", "FTips").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.isEmpty()){
-                            Log.d("qpoqop","whiat?");
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            Log.d("qpoqop", "whiat?");
                             return;
-                        }else{
+                        } else {
                             types = queryDocumentSnapshots.toObjects(Post.class);
                             types.sort(new CustomComparator().reversed());
-                            if(types.size() < 10) {
-                                for(int i = 0; i < types.size(); i++)
+                            if (types.size() < 10) {
+                                for (int i = 0; i < types.size(); i++)
                                     mArrayList.add(types.get(i));
-
-                            }
-                            else{
-                                for(int j = 0; j < 10; j++)
+                            } else {
+                                for (int j = 0; j < 10; j++)
                                     mArrayList.add(types.get(j));
-
                             }
                             recyclerView.setAdapter(mAdapter);
                         }
@@ -153,6 +150,7 @@ public class FTips extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Log.d("qweqweqwe", "아무내용이없습니다");
                     }
                 });
     }

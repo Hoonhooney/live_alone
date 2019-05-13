@@ -130,29 +130,26 @@ public class FCook extends Fragment {
         }, 1000);
     }
 
-    public void getListItems(){
-        if(!mArrayList.isEmpty())
+    public void getListItems() {
+        if (!mArrayList.isEmpty())
             mArrayList.clear();
-        Log.d("qpoqop","whiatqwdqw?");
-        fs.collection("posts").whereEqualTo("category","FCook").get()
+        Log.d("qpoqop", "whiatqwdqw?");
+        fs.collection("posts").whereEqualTo("category", "FCook").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.isEmpty()){
-                            Log.d("qpoqop","whiat?");
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            Log.d("qpoqop", "whiat?");
                             return;
-                        }else{
+                        } else {
                             types = queryDocumentSnapshots.toObjects(Post.class);
                             types.sort(new CustomComparator().reversed());
-                            if(types.size() < 10) {
-                                for(int i = 0; i < types.size(); i++)
-                                        mArrayList.add(types.get(i));
-
-                            }
-                            else{
-                                for(int j = 0; j < 10; j++)
-                                        mArrayList.add(types.get(j));
-
+                            if (types.size() < 10) {
+                                for (int i = 0; i < types.size(); i++)
+                                    mArrayList.add(types.get(i));
+                            } else {
+                                for (int j = 0; j < 10; j++)
+                                    mArrayList.add(types.get(j));
                             }
                             recyclerView.setAdapter(mAdapter);
                         }
@@ -161,7 +158,7 @@ public class FCook extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("qweqweqwe","아무내용이없습니다");
+                        Log.d("qweqweqwe", "아무내용이없습니다");
                     }
                 });
     }
