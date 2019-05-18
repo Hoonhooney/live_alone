@@ -26,18 +26,22 @@ public class HomeFeed extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseUser firebaseUser;
     private Fragment fr;
+    private String nickname;
 
     @Override
     protected void onStart() {
         super.onStart();
-        DocumentReference docRef = firebaseFirestore.collection("users").document(firebaseUser.getUid());
+        final DocumentReference docRef = firebaseFirestore.collection("users").document(firebaseUser.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null && document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                        User user = document.toObject(User.class);
+                        nickname = document.getString("nickname");
+
                     } else {
                         Intent i = new Intent(HomeFeed.this,EnterDetailed.class);
                         startActivityForResult(i, 1);

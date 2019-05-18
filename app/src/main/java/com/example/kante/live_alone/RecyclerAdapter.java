@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -31,6 +40,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private int item_layout;
     private FirebaseStorage storage;
     private StorageReference storageRef;
+    private FirebaseFirestore firestore;
+    private DocumentReference documentReference;
 //    Bitmap bitmap;
 
     public RecyclerAdapter(Context context, List<Post> posts, int item_layout) {
@@ -44,6 +55,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds, null);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://hcslivealone.appspot.com");
+        firestore = FirebaseFirestore.getInstance();
         return new ViewHolder(v);
     }
 
@@ -52,7 +64,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         final Post post = posts.get(position);
         holder.title.setText(post.getTitle());
         holder.body.setText(post.getBody());
-        holder.userId.setText(post.getUid());
+
+        firestore.collection("users").document(post.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(!documentSnapshot.exists()){
+                    return;
+                }else{
+                    User user = documentSnapshot.toObject(User.class);
+                    String nickname = user.getNickname();
+                    holder.feed_nickname.setText(nickname);
+                }
+            }
+        });
         try{
             Date date = new SimpleDateFormat("yyyyMMddkkmmss").parse(post.getCreated_at());
             String format = new SimpleDateFormat("yyyy/MM/dd kk:mm").format(date);
@@ -79,7 +103,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private TextView body;
-        private TextView userId;
+        private TextView feed_nickname;
         private CardView cardview;
         private ImageView image;
         private String url;
@@ -90,7 +114,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             image = (ImageView) itemView.findViewById(R.id.postedImage);
             title = (TextView) itemView.findViewById(R.id.title);
             body = (TextView) itemView.findViewById(R.id.detail);
-            userId = (TextView) itemView.findViewById(R.id.userId);
+            feed_nickname = (TextView) itemView.findViewById(R.id.feed_nickname);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
             time = (TextView) itemView.findViewById(R.id.time);
 
@@ -99,7 +123,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 public void onClick(View v) {
                     String pTitle = title.getText().toString();
                     String pBody = body.getText().toString();
-                    String pUid = userId.getText().toString();
+                    String pUid = feed_nickname.getText().toString();
                     String pTime = time.getText().toString();
                     Intent intent = new Intent(context, DetailedPost.class);
                     intent.putExtra("TIME", pTime);

@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
@@ -51,10 +52,11 @@ public class Posting extends AppCompatActivity {
     private TextView text_context;
     private String uid;
     private String email;
-    private String username;
+    private String nickname;
     private FirebaseFirestore mFirestore;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private DocumentReference users;
     private String imagePath;
     private Uri filePath;
     private BootstrapButton btnChoose;
@@ -62,7 +64,7 @@ public class Posting extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posting);
         mFirestore = FirebaseFirestore.getInstance();
@@ -85,22 +87,24 @@ public class Posting extends AppCompatActivity {
         text_context = findViewById(R.id.text_context);
         text_title = findViewById(R.id.text_title);
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        users = mFirestore.collection("users").document(fbUser.getUid());
+
+
         postingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getUserInfo(fbUser);
                 Log.d("GGGG","QWEQWE");
                 if(imageView.getDrawable()==null){
-                    writeNewPost(uid, username, text_title.getText().toString(), text_context.getText().toString());
+                    writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
                     finish();
                 }else{
                     uploadImage();
-                    writeNewPost(uid, username, text_title.getText().toString(), text_context.getText().toString());
+                    writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
                 }
             }
         });
 
-        Log.d("asdasdasd",getIntent().getStringExtra("Category"));
 
         Button mymenu = findViewById(R.id.gotomymenu);
         mymenu.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +126,7 @@ public class Posting extends AppCompatActivity {
 
     private void getUserInfo(FirebaseUser user){
         uid = user.getUid();
-        username = user.getDisplayName();
+        nickname = user.getDisplayName();
         email = user.getEmail();
     }
 
