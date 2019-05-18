@@ -135,6 +135,10 @@ public class FTips extends Fragment {
                             return;
                         } else {
                             types = queryDocumentSnapshots.toObjects(Post.class);
+                            for(int x = 0; x<types.size(); x++){
+                                String post_id = queryDocumentSnapshots.getDocuments().get(x).getId();
+                                types.get(x).withId(post_id);
+                            }
                             types.sort(new CustomComparator().reversed());
                             if (types.size() < 10) {
                                 for (int i = 0; i < types.size(); i++)

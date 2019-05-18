@@ -45,6 +45,7 @@ public class FCook extends Fragment {
     int currentItems, totalItems, scrollOutItems;
     ProgressBar pgsBar;
 
+
     public FCook() {
         // Required empty public constructor
     }
@@ -54,7 +55,6 @@ public class FCook extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_cook, container, false);
-
         FirebaseFirestore.setLoggingEnabled(true);
         fs = FirebaseFirestore.getInstance();
 
@@ -74,9 +74,15 @@ public class FCook extends Fragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                if(!recyclerView.canScrollVertically(-1) || !recyclerView.canScrollVertically(1)){
+                    isScrolling = true;
+                }else if(recyclerView.computeVerticalScrollOffset() == 0){
                     isScrolling = true;
                 }
+
+//                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+//                    isScrolling = true;
+//                }
             }
 
             @Override
@@ -86,7 +92,7 @@ public class FCook extends Fragment {
                 totalItems = layoutManager.getItemCount();
                 scrollOutItems = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
 
-                if(isScrolling && (currentItems + scrollOutItems == totalItems)){
+                if(isScrolling && (currentItems + scrollOutItems >= totalItems)){
                     isScrolling = false;
                     fetchData();
                 }
@@ -143,10 +149,15 @@ public class FCook extends Fragment {
                             return;
                         } else {
                             types = queryDocumentSnapshots.toObjects(Post.class);
+                            for(int x = 0; x<types.size(); x++){
+                                String post_id = queryDocumentSnapshots.getDocuments().get(x).getId();
+                                types.get(x).withId(post_id);
+                            }
                             types.sort(new CustomComparator().reversed());
                             if (types.size() < 10) {
-                                for (int i = 0; i < types.size(); i++)
+                                for (int i = 0; i < types.size(); i++) {
                                     mArrayList.add(types.get(i));
+                                }
                             } else {
                                 for (int j = 0; j < 10; j++)
                                     mArrayList.add(types.get(j));
