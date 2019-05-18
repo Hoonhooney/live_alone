@@ -64,7 +64,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         final Post post = posts.get(position);
         holder.title.setText(post.getTitle());
         holder.body.setText(post.getBody());
+        holder.post_id= post.getId();
 
+
+        //리사이클러뷰 각각의 아이템에 유저 닉네임 보이도록 표시
         firestore.collection("users").document(post.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -108,6 +111,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private ImageView image;
         private String url;
         private TextView time;
+        private String post_id;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -132,6 +136,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     intent.putExtra("UID", pUid);
                     intent.putExtra("TIME", pTime);
                     intent.putExtra("URL", url);
+                    intent.putExtra("POSTID",post_id);
                     context.startActivity(intent);
                 }
             });
