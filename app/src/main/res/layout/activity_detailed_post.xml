@@ -80,8 +80,19 @@
                         android:text="body"
                         android:textSize="15sp"
                         android:textStyle="normal" />
+
+                    <Button
+                        android:id="@+id/postDelete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:onClick="deletePostAffirm"
+                        android:text="삭제하기"
+                        android:visibility="gone" />
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
 

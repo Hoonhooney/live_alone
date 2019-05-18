@@ -1,15 +1,24 @@
 package com.example.kante.live_alone;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -22,16 +31,42 @@ public class DetailedPost extends AppCompatActivity {
     private TextView dTime;
     private String dUrl;
     private StorageReference sr;
+    private Button deleteButton;
+    private String currentUserId;
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
+    private User user;
+    private String post_id;
 //    private Post p;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_post);
+
+        //유저정보와 글쓴이가 일치하다면 포스트 삭제버튼 활성화
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        String user_id = firebaseAuth.getUid(); // 유저버튼 받아옴
+        firebaseFirestore.collection("users").document(user_id).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            user = documentSnapshot.toObject(User.class);
+                            if(user.getNickname().equals(dUid.getText().toString())){
+                                deleteButton.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                });
+
+
         dImage = findViewById(R.id.dp_image);
         dTitle = findViewById(R.id.dp_title);
         dBody = findViewById(R.id.dp_body);
         dUid = findViewById(R.id.dp_user_id);
         dTime = findViewById(R.id.dp_posted_time);
+        deleteButton = findViewById(R.id.postDelete);
 
         Intent intent = getIntent();
         dTitle.setText(intent.getStringExtra("TITLE"));
@@ -39,6 +74,8 @@ public class DetailedPost extends AppCompatActivity {
         dUid.setText(intent.getStringExtra("UID"));
         dTime.setText(intent.getStringExtra("TIME"));
         dUrl = getIntent().getStringExtra("URL");
+        post_id = getIntent().getStringExtra("POSTID");
+        Log.d("qazqaz",post_id);
 
         fs = FirebaseStorage.getInstance();
         sr = fs.getReferenceFromUrl("gs://hcslivealone.appspot.com");
@@ -64,5 +101,30 @@ public class DetailedPost extends AppCompatActivity {
             }
         });
         popup.show();
+    }
+    public void deletePost(){
+        firebaseFirestore.collection("posts").document(post_id).delete();
+    }
+
+    public void deletePostAffirm(View v)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("포스트 삭제");
+        builder.setMessage("정말 삭제하시겠습니까?");
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        deletePost();
+                        Toast.makeText(getApplicationContext(),"포스트가 삭제되었습니다.",Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
+                    }
+                });
+        builder.show();
     }
 }
