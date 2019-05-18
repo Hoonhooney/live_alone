@@ -3,8 +3,10 @@ package com.example.kante.live_alone;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -47,7 +49,20 @@ public class DetailedPost extends AppCompatActivity {
     }
 
     public void menuClick(View v){
-        Intent intent = new Intent(this, MyMenu.class);
-        startActivity(intent);
+        PopupMenu popup = new PopupMenu(getApplicationContext(), v);
+        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.go_mymenu:
+                        Intent intent = new Intent(DetailedPost.this, MyMenu.class);
+                        startActivity(intent);
+                        break;
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 }
