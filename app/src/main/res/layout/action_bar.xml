@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/actionbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="10dp"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:id="@+id/menu"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu"
+        android:onClick="menuClick" />
+
+    <ImageView
+        android:id="@+id/simpleLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="false"
+        android:background="@drawable/simple_logo" />
+
+    <Button
+        android:id="@+id/search"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/search" />
+
+</RelativeLayout>

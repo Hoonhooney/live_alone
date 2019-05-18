@@ -20,35 +20,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
+        <include
+            android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="10dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/menu"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/menu" />
-
-            <ImageView
-                android:id="@+id/simpleLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="false"
-                android:background="@drawable/simple_logo" />
-
-            <Button
-                android:id="@+id/option"
-                android:layout_width="25dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/option" />
-
-
-        </RelativeLayout>
+            layout="@layout/action_bar"
+            />
 
         <TextView
             android:layout_width="match_parent"

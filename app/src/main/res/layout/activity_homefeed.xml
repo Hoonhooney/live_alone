@@ -7,44 +7,22 @@
     android:orientation="vertical"
     tools:context=".HomeFeed">
 
+    <include
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/action_bar"
+        />
+
     <LinearLayout
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_below="@+id/header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <RelativeLayout
-            android:id="@+id/actionbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="10dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/menu"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/menu" />
-
-            <ImageView
-                android:id="@+id/simpleLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="false"
-                android:background="@drawable/simple_logo" />
-
-            <Button
-                android:id="@+id/search"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/search" />
-
-        </RelativeLayout>
 
         <TextView
             android:id="@+id/school"
