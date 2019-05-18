@@ -121,4 +121,9 @@ public class HomeFeed extends AppCompatActivity {
                 break;
         }
     }
+
+    public void menuClick(View v){
+        Intent intent = new Intent(this, MyMenu.class);
+        startActivity(intent);
+    }
 }
