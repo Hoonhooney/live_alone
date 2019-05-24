@@ -134,6 +134,7 @@ public class Posting extends AppCompatActivity {
         WriteBatch batch = mFirestore.batch();
         DocumentReference posts = mFirestore.collection("posts").document();
         Map<String, Object> docData = new HashMap<>();
+        docData.put("id",posts.getId());
         docData.put("user_id", userId);
         docData.put("user_name", username);
         docData.put("email", email);
