@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,6 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private FirebaseFirestore firestore;
+    private FirebaseAuth firebaseAuth;
     private DocumentReference documentReference;
 //    Bitmap bitmap;
 
@@ -56,6 +58,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://hcslivealone.appspot.com");
         firestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         return new ViewHolder(v);
     }
 
@@ -65,6 +68,29 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.title.setText(post.getTitle());
         holder.body.setText(post.getBody());
         holder.post_id= post.getId();
+
+        //like count 설정
+        firestore.collection("likes").whereEqualTo("post_id",post.id).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.isEmpty()){
+                            holder.like_counts.setText(String.valueOf(0));
+                        }else {
+                            holder.like_counts.setText(String.valueOf(queryDocumentSnapshots.size()));
+                        }
+                    }
+                });
+
+        firestore.collection("likes").whereEqualTo("post_id",post.id).whereEqualTo("user_id",firebaseAuth.getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.isEmpty()){
+                            holder.like.setImageResource(R.drawable.like_clicked);
+                        }
+                    }
+                });
 
 
         //리사이클러뷰 각각의 아이템에 유저 닉네임 보이도록 표시
@@ -112,6 +138,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private String url;
         private TextView time;
         private String post_id;
+        private TextView like_counts;
+        private ImageView like;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -121,6 +149,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             feed_nickname = (TextView) itemView.findViewById(R.id.feed_nickname);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
             time = (TextView) itemView.findViewById(R.id.time);
+            like_counts = itemView.findViewById(R.id.likes_count);
+            like = itemView.findViewById(R.id.like);
+
 
             cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
