@@ -25,6 +25,8 @@ import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -149,6 +151,12 @@ public class DetailedPost extends AppCompatActivity {
         docData.put("user_id", firebaseAuth.getUid());
         docData.put("post_id", post_id);
         docData.put("id", comment.getId());
+
+        // 댓글 날짜 DB
+        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmm");
+        String format = s.format(new Date());
+
+        docData.put("created_at",format);
 
         batch.set(comment,docData);
         batch.commit();

@@ -13,6 +13,7 @@ public class Comment {
     public String user_id;
     public String post_id;
     public String context;
+    public String created_at;
 
 
     public Comment() {
@@ -27,6 +28,9 @@ public class Comment {
 
     public String getUser_id() {
         return user_id;
+    }
+    public String getCreated_at() {
+        return created_at;
     }
 
     public String getPost_id() {
@@ -43,6 +47,7 @@ public class Comment {
         result.put("user_id", user_id);
         result.put("post_id", post_id);
         result.put("context", context);
+        result.put("created_at",created_at);
         return result;
     }
 }
