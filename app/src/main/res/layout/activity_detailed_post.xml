@@ -39,6 +39,15 @@
                         android:layout_gravity="center"
                         app:srcCompat="@drawable/splash_img" />
 
+
+                    <ImageView
+                        android:id="@+id/btn_like"
+                        android:layout_width="53dp"
+                        android:layout_height="53dp"
+                        android:layout_gravity="right"
+                        android:onClick="onClickLike"
+                        app:srcCompat="@drawable/like" />
+
                     <TextView
                         android:id="@+id/dp_title"
                         android:layout_width="match_parent"
