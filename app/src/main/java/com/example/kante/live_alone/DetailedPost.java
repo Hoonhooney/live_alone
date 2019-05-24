@@ -2,7 +2,11 @@ package com.example.kante.live_alone;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,15 +16,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.base.Predicate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -28,7 +37,9 @@ import com.google.firebase.storage.StorageReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DetailedPost extends AppCompatActivity {
     private FirebaseStorage fs;
@@ -47,6 +58,8 @@ public class DetailedPost extends AppCompatActivity {
     private String post_id;
     private Button writeCommentButton;
     private EditText contextComment;
+    private ImageView buttonLike;
+
 //    private Post p;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +92,7 @@ public class DetailedPost extends AppCompatActivity {
         deleteButton = findViewById(R.id.postDelete);
         writeCommentButton = findViewById(R.id.btn_comment_input);
         contextComment = findViewById(R.id.input_comment_context);
+        buttonLike = findViewById(R.id.btn_like);
 
         Intent intent = getIntent();
         dTitle.setText(intent.getStringExtra("TITLE"));
@@ -94,6 +108,27 @@ public class DetailedPost extends AppCompatActivity {
             StorageReference path = sr.child(dUrl);
             Glide.with(this).load(path).skipMemoryCache(true).into(dImage);
         }
+
+        //처음에 시작할 때 자기가 좋아요한 글일 경우 좋아요 이미지가 활성화 되어있게 변경
+        isLikePost();
+
+    }
+
+    public void isLikePost(){
+        firebaseFirestore.collection("likes").whereEqualTo("post_id",post_id).whereEqualTo("user_id",firebaseAuth.getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.isEmpty()){
+                            Like l = queryDocumentSnapshots.toObjects(Like.class).get(0);
+                            if(l.status.equals("active")){
+                                buttonLike.setImageResource(R.drawable.like_clicked);
+                            }
+                        }else{
+                            return;
+                        }
+                    }
+                });
     }
 
     public void menuClick(View v){
@@ -167,5 +202,68 @@ public class DetailedPost extends AppCompatActivity {
         Toast.makeText(this, "댓글이 등록되었습니다!", Toast.LENGTH_SHORT).show();
         finish();
         startActivity(getIntent());
+    }
+
+    public void onClickLike(View v){
+
+        firebaseFirestore.collection("likes").whereEqualTo("post_id",post_id).whereEqualTo("user_id",firebaseAuth.getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.isEmpty()){
+                            WriteBatch batch = firebaseFirestore.batch();
+                            DocumentReference like = firebaseFirestore.collection("likes").document();
+                            Map<String, Object> docData = new HashMap<>();
+
+                            docData.put("user_id", firebaseAuth.getUid());
+                            docData.put("post_id", post_id);
+                            docData.put("id", like.getId());
+
+                            // 댓글 날짜 DB
+                            SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmm");
+                            String format = s.format(new Date());
+
+                            docData.put("created_at",format);
+                            docData.put("status", "active");
+                            buttonLike.setImageResource(R.drawable.like_clicked);
+
+                            batch.set(like,docData);
+                            batch.commit();
+                        }else {
+                            Like l = queryDocumentSnapshots.toObjects(Like.class).get(0);
+                            if (l.status.equals("active")) {
+                                Log.d("qweasdzxc", "zxc");
+                                firebaseFirestore.collection("likes").document(l.id).update("status", "deactivated");
+                                buttonLike.setImageResource(R.drawable.like);
+                            } else {
+                                Log.d("qweasdzxc", "qqq");
+                                firebaseFirestore.collection("likes").document(l.id).update("status", "active");
+                                buttonLike.setImageResource(R.drawable.like_clicked);
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                WriteBatch batch = firebaseFirestore.batch();
+                DocumentReference like = firebaseFirestore.collection("likes").document();
+                Map<String, Object> docData = new HashMap<>();
+
+                docData.put("user_id", firebaseAuth.getUid());
+                docData.put("post_id", post_id);
+                docData.put("id", like.getId());
+
+                // 댓글 날짜 DB
+                SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmm");
+                String format = s.format(new Date());
+
+                docData.put("created_at",format);
+                docData.put("status", "active");
+                buttonLike.setImageResource(R.drawable.like_clicked);
+
+                batch.set(like,docData);
+                batch.commit();
+            }
+        });
     }
 }
