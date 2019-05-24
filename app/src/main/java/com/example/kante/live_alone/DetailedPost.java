@@ -9,6 +9,7 @@ import android.view.View;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -17,10 +18,15 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DetailedPost extends AppCompatActivity {
     private FirebaseStorage fs;
@@ -37,6 +43,8 @@ public class DetailedPost extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private User user;
     private String post_id;
+    private Button writeCommentButton;
+    private EditText contextComment;
 //    private Post p;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,8 @@ public class DetailedPost extends AppCompatActivity {
         dUid = findViewById(R.id.dp_user_id);
         dTime = findViewById(R.id.dp_posted_time);
         deleteButton = findViewById(R.id.postDelete);
+        writeCommentButton = findViewById(R.id.btn_comment_input);
+        contextComment = findViewById(R.id.input_comment_context);
 
         Intent intent = getIntent();
         dTitle.setText(intent.getStringExtra("TITLE"));
@@ -75,7 +85,6 @@ public class DetailedPost extends AppCompatActivity {
         dTime.setText(intent.getStringExtra("TIME"));
         dUrl = getIntent().getStringExtra("URL");
         post_id = getIntent().getStringExtra("POSTID");
-        Log.d("qazqaz",post_id);
 
         fs = FirebaseStorage.getInstance();
         sr = fs.getReferenceFromUrl("gs://hcslivealone.appspot.com");
@@ -102,6 +111,7 @@ public class DetailedPost extends AppCompatActivity {
         });
         popup.show();
     }
+
     public void deletePost(){
         firebaseFirestore.collection("posts").document(post_id).delete();
     }
@@ -126,5 +136,28 @@ public class DetailedPost extends AppCompatActivity {
                     }
                 });
         builder.show();
+    }
+
+
+    public void writeComment(){
+        WriteBatch batch = firebaseFirestore.batch();
+        DocumentReference comment = firebaseFirestore.collection("comments").document();
+        Map<String, Object> docData = new HashMap<>();
+
+        String context = contextComment.getText().toString();
+        docData.put("context", context);
+        docData.put("user_id", firebaseAuth.getUid());
+        docData.put("post_id", post_id);
+        docData.put("id", comment.getId());
+
+        batch.set(comment,docData);
+        batch.commit();
+    }
+
+    public void onClickwriteComment(View v){
+        writeComment();
+        Toast.makeText(this, "댓글이 등록되었습니다!", Toast.LENGTH_SHORT).show();
+        finish();
+        startActivity(getIntent());
     }
 }
