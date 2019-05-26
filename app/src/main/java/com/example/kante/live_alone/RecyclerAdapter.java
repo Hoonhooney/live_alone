@@ -70,7 +70,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.post_id= post.getId();
 
         //like count 설정
-        firestore.collection("likes").whereEqualTo("post_id",post.id).get()
+        firestore.collection("likes").whereEqualTo("post_id",post.id).whereEqualTo("status","active").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -87,7 +87,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if(!queryDocumentSnapshots.isEmpty()){
-                            holder.like.setImageResource(R.drawable.like_clicked);
+                            Like l = queryDocumentSnapshots.toObjects(Like.class).get(0);
+                            if(l.status.equals("active")){
+                                holder.like.setImageResource(R.drawable.like_clicked);
+                            }
                         }
                     }
                 });
