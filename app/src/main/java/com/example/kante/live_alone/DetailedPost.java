@@ -12,9 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -35,6 +38,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +64,10 @@ public class DetailedPost extends AppCompatActivity {
     private Button writeCommentButton;
     private EditText contextComment;
     private ImageView buttonLike;
+
+    private ListView commentListView;
+    private CommentAdapter adapter;
+    private List<Comment> comments;
 
 //    private Post p;
     @Override
@@ -109,9 +118,71 @@ public class DetailedPost extends AppCompatActivity {
             Glide.with(this).load(path).skipMemoryCache(true).into(dImage);
         }
 
+        commentListView = (ListView)findViewById(R.id.list_comments);
+        //댓글 보이기
+        getComments();
+
         //처음에 시작할 때 자기가 좋아요한 글일 경우 좋아요 이미지가 활성화 되어있게 변경
         isLikePost();
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+    }
+
+
+    public void getComments(){
+//        if (!comments.isEmpty())
+////            comments.clear();
+        Log.d("qweqweqwe", "aaaaaaaa");
+        firebaseFirestore.collection("comments").whereEqualTo("post_id",post_id).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.isEmpty()){
+                            return;
+                        } else{
+                            comments = queryDocumentSnapshots.toObjects(Comment.class);
+                            comments.sort(new CommentComparator().reversed());
+                            adapter = new CommentAdapter(DetailedPost.this, comments);
+                            commentListView.setAdapter(adapter);
+                            setListViewHeightBasedOnChildren(commentListView);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("qweqweqwe", "아무내용이없습니다");
+                    }
+                });
+
+
+    }
+
+    //댓글 수만큼 listView 크기 설정
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        CommentAdapter listAdapter = (CommentAdapter) listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 
     public void isLikePost(){
@@ -188,7 +259,7 @@ public class DetailedPost extends AppCompatActivity {
         docData.put("id", comment.getId());
 
         // 댓글 날짜 DB
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmm");
+        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
         String format = s.format(new Date());
 
         docData.put("created_at",format);
@@ -220,7 +291,7 @@ public class DetailedPost extends AppCompatActivity {
                             docData.put("id", like.getId());
 
                             // 댓글 날짜 DB
-                            SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmm");
+                            SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
                             String format = s.format(new Date());
 
                             docData.put("created_at",format);
@@ -254,7 +325,7 @@ public class DetailedPost extends AppCompatActivity {
                 docData.put("id", like.getId());
 
                 // 댓글 날짜 DB
-                SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmm");
+                SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
                 String format = s.format(new Date());
 
                 docData.put("created_at",format);
@@ -265,5 +336,13 @@ public class DetailedPost extends AppCompatActivity {
                 batch.commit();
             }
         });
+    }
+
+    //댓글 시간순으로 정렬
+    public class CommentComparator implements Comparator<Comment> {
+        @Override
+        public int compare(Comment o1, Comment o2) {
+            return o1.getCreated_at().compareTo(o2.getCreated_at());
+        }
     }
 }
