@@ -67,6 +67,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         final Post post = posts.get(position);
         holder.title.setText(post.getTitle());
         holder.body.setText(post.getBody());
+        if(post.getBody().length() > 200){
+            ViewGroup.LayoutParams l = holder.body.getLayoutParams();
+            l.height = 200;
+            holder.body.setLayoutParams(l);
+        }
         holder.post_id= post.getId();
 
         //like count 설정
@@ -121,9 +126,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             Glide.with(this.context).load(path).skipMemoryCache(true).into(holder.image);
             holder.url = post.getImageURL();
         }
-        else
+        else {
             holder.url = null;
-            holder.image.setImageResource(R.drawable.splash_img);
+            ViewGroup.LayoutParams l = holder.image.getLayoutParams();
+            l.width = 0;
+            l.height =0;
+            holder.image.setLayoutParams(l);
+        }
     }
 
     @Override
@@ -147,6 +156,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.postedImage);
+
             title = (TextView) itemView.findViewById(R.id.title);
             body = (TextView) itemView.findViewById(R.id.detail);
             feed_nickname = (TextView) itemView.findViewById(R.id.feed_nickname);
