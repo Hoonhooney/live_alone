@@ -9,14 +9,14 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/bootstrap_brand_secondary_text">
+        app:cardBackgroundColor="@color/bootstrap_gray_light">
 
 
         <LinearLayout
-            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/bootstrap_brand_success"
+            android:layout_marginTop="2dp"
+            android:background="@color/bootstrap_brand_secondary_fill"
             android:orientation="horizontal">
 
             <LinearLayout
