@@ -6,7 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.common.base.Predicate;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,8 +24,10 @@ public class CommentAdapter extends BaseAdapter {
 
     private Context context;
     private List<Comment> comments;
+    private FirebaseAuth user;
 
     public CommentAdapter(Context context,List<Comment> objects) {
+        user = FirebaseAuth.getInstance();
         this.context = context;
         this.comments = objects;
     }
@@ -57,7 +64,7 @@ public class CommentAdapter extends BaseAdapter {
         Comment comment = comments.get(position);
         Log.d("fafafa", comment.getUser_id());
 
-        uId.setText(comment.getUser_id());
+        uId.setText(comment.getNickname());
         cBody.setText(comment.getContext());
         try{
             Log.d("fafafa", comment.getCreated_at());
@@ -67,6 +74,14 @@ public class CommentAdapter extends BaseAdapter {
         }catch(ParseException pe){
             pe.printStackTrace();
         }
+        if(user.getUid().equals(comment.getUser_id())){
+            Button deleteButton = (Button)convertView.findViewById(R.id.btn_comment_delete);
+            deleteButton.setVisibility(View.VISIBLE);
+
+        }
         return convertView;
     }
+
+
+
 }
