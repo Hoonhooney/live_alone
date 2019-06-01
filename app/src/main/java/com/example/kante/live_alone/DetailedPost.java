@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -62,6 +63,7 @@ public class DetailedPost extends AppCompatActivity {
     private User user;
     private String post_id;
     private Button writeCommentButton;
+    private Button findLocationButton;
     private EditText contextComment;
     private ImageView buttonLike;
 
@@ -92,7 +94,6 @@ public class DetailedPost extends AppCompatActivity {
                     }
                 });
 
-
         dImage = findViewById(R.id.dp_image);
         dTitle = findViewById(R.id.dp_title);
         dBody = findViewById(R.id.dp_body);
@@ -102,12 +103,27 @@ public class DetailedPost extends AppCompatActivity {
         writeCommentButton = findViewById(R.id.btn_comment_input);
         contextComment = findViewById(R.id.input_comment_context);
         buttonLike = findViewById(R.id.btn_like);
+        findLocationButton = findViewById(R.id.find_location);
 
         Intent intent = getIntent();
         dTitle.setText(intent.getStringExtra("TITLE"));
         dBody.setText(intent.getStringExtra("BODY"));
         dUid.setText(intent.getStringExtra("UID"));
         dTime.setText(intent.getStringExtra("TIME"));
+
+        //음식점 추천 카테고리 글에만 위치 검색기능 버튼 활성화
+        if(intent.getStringExtra("CATEGORY").equals("FEatout")){
+            findLocationButton.setVisibility(View.VISIBLE);
+            findLocationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searchIntent = new Intent();
+                    searchIntent.setAction(Intent.ACTION_VIEW);
+                    searchIntent.setData(Uri.parse("geo:0,0?q="+dTitle.getText()));
+                    startActivity(searchIntent);
+                }
+            });
+        }
         dUrl = getIntent().getStringExtra("URL");
         if(dUrl != null){
             dImage.setVisibility(View.VISIBLE);
