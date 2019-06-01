@@ -95,6 +95,9 @@ public class HomeFeed extends AppCompatActivity {
             case R.id.tips:
                 fr = new FTips();
                 break;
+            case R.id.eatout:
+                fr = new FEatout();
+                break;
         }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
