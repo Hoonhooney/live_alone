@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,9 @@ public class Posting extends AppCompatActivity {
     private Button postingButton;
     private TextView text_title;
     private TextView text_context;
+    private TextView text_reason;
+    private TextView text_inf;
+    private String foodFrom;
     private String uid;
     private String email;
     private String nickname;
@@ -66,7 +70,10 @@ public class Posting extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_posting);
+        if(getIntent().getStringExtra("Category").equals("FEatout"))
+            setContentView(R.layout.activity_posting_eatout);
+        else
+            setContentView(R.layout.activity_posting);
         mFirestore = FirebaseFirestore.getInstance();
 
         //For storage
@@ -86,6 +93,10 @@ public class Posting extends AppCompatActivity {
         postingButton = findViewById(R.id.btn_posting);
         text_context = findViewById(R.id.text_context);
         text_title = findViewById(R.id.text_title);
+
+        text_reason = findViewById(R.id.text_reason);
+        text_inf = findViewById(R.id.inf);
+
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         users = mFirestore.collection("users").document(fbUser.getUid());
 
@@ -93,14 +104,27 @@ public class Posting extends AppCompatActivity {
         postingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String eatoutBody = null;
                 getUserInfo(fbUser);
                 Log.d("GGGG","QWEQWE");
                 if(imageView.getDrawable()==null){
-                    writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
+                    if(getIntent().getStringExtra("Category").equals("FEatout")){
+                        if(foodFrom != null)
+                            eatoutBody = "음식 종류 : "+foodFrom+"\n\n추천 이유 : "+text_reason.getText()+"\n\n기타 정보 : "+text_inf.getText();
+                        writeNewPost(uid, nickname, text_title.getText().toString(), eatoutBody);
+                    }
+                    else
+                        writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
                     finish();
                 }else{
                     uploadImage();
-                    writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
+                    if(getIntent().getStringExtra("Category").equals("FEatout")){
+                        if(foodFrom != null)
+                            eatoutBody = "음식 종류 : "+foodFrom+"\n\n추천 이유 : "+text_reason.getText()+"\n\n기타 정보 : "+text_inf.getText();
+                        writeNewPost(uid, nickname, text_title.getText().toString(), eatoutBody);
+                    }
+                    else
+                        writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
                 }
             }
         });
@@ -225,5 +249,7 @@ public class Posting extends AppCompatActivity {
         }
     }
 
-
+    public void onRadioButtonClicked(View v){
+        foodFrom = (String)((RadioButton) v).getText();
+    }
 }
