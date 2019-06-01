@@ -109,6 +109,9 @@ public class DetailedPost extends AppCompatActivity {
         dUid.setText(intent.getStringExtra("UID"));
         dTime.setText(intent.getStringExtra("TIME"));
         dUrl = getIntent().getStringExtra("URL");
+        if(dUrl != null){
+            dImage.setVisibility(View.VISIBLE);
+        }
         post_id = getIntent().getStringExtra("POSTID");
 
         fs = FirebaseStorage.getInstance();
@@ -132,6 +135,59 @@ public class DetailedPost extends AppCompatActivity {
         super.onResume();
     }
 
+
+    public void menuClick(View v){
+        PopupMenu popup = new PopupMenu(getApplicationContext(), v);
+        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.go_mymenu:
+                        Intent intent = new Intent(DetailedPost.this, MyMenu.class);
+                        startActivity(intent);
+                        break;
+                }
+                return false;
+            }
+        });
+        popup.show();
+    }
+
+
+    public void deletePost(){
+        firebaseFirestore.collection("posts").document(post_id).delete();
+    }
+
+    public void deletePostAffirm(View v)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("포스트 삭제");
+        builder.setMessage("정말 삭제하시겠습니까?");
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        deletePost();
+                        Toast.makeText(getApplicationContext(),"포스트가 삭제되었습니다.",Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
+                    }
+                });
+        builder.show();
+    }
+
+
+
+
+
+    /**********************************
+     *             댓글 관련            *
+     **********************************/
 
     public void getComments(){
 //        if (!comments.isEmpty())
@@ -186,68 +242,6 @@ public class DetailedPost extends AppCompatActivity {
         listView.requestLayout();
     }
 
-    public void isLikePost(){
-        firebaseFirestore.collection("likes").whereEqualTo("post_id",post_id).whereEqualTo("user_id",firebaseAuth.getUid()).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(!queryDocumentSnapshots.isEmpty()){
-                            Like l = queryDocumentSnapshots.toObjects(Like.class).get(0);
-                            if(l.status.equals("active")){
-                                buttonLike.setImageResource(R.drawable.like_clicked);
-                            }
-                        }else{
-                            return;
-                        }
-                    }
-                });
-    }
-
-    public void menuClick(View v){
-        PopupMenu popup = new PopupMenu(getApplicationContext(), v);
-        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch(item.getItemId()){
-                    case R.id.go_mymenu:
-                        Intent intent = new Intent(DetailedPost.this, MyMenu.class);
-                        startActivity(intent);
-                        break;
-                }
-                return false;
-            }
-        });
-        popup.show();
-    }
-
-    public void deletePost(){
-        firebaseFirestore.collection("posts").document(post_id).delete();
-    }
-
-    public void deletePostAffirm(View v)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("포스트 삭제");
-        builder.setMessage("정말 삭제하시겠습니까?");
-        builder.setPositiveButton("예",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        deletePost();
-                        Toast.makeText(getApplicationContext(),"포스트가 삭제되었습니다.",Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                });
-        builder.setNegativeButton("아니오",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
-                    }
-                });
-        builder.show();
-    }
-
-
     public void writeComment(){
         WriteBatch batch = firebaseFirestore.batch();
         DocumentReference comment = firebaseFirestore.collection("comments").document();
@@ -271,12 +265,6 @@ public class DetailedPost extends AppCompatActivity {
         batch.commit();
     }
 
-    public void onClickwriteComment(View v){
-        writeComment();
-        Toast.makeText(this, "댓글이 등록되었습니다!", Toast.LENGTH_SHORT).show();
-        finish();
-        startActivity(getIntent());
-    }
 
     public void onClickCommentDelete(View v){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -302,6 +290,50 @@ public class DetailedPost extends AppCompatActivity {
                 });
         builder.show();
     }
+
+
+    //댓글 시간순으로 정렬
+    public class CommentComparator implements Comparator<Comment> {
+        @Override
+        public int compare(Comment o1, Comment o2) {
+            return o1.getCreated_at().compareTo(o2.getCreated_at());
+        }
+    }
+
+
+
+
+    /**********************************
+     *             좋아요 관련            *
+     **********************************/
+
+
+    public void isLikePost(){
+        firebaseFirestore.collection("likes").whereEqualTo("post_id",post_id).whereEqualTo("user_id",firebaseAuth.getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.isEmpty()){
+                            Like l = queryDocumentSnapshots.toObjects(Like.class).get(0);
+                            if(l.status.equals("active")){
+                                buttonLike.setImageResource(R.drawable.like_clicked);
+                            }
+                        }else{
+                            return;
+                        }
+                    }
+                });
+    }
+
+
+
+    public void onClickwriteComment(View v){
+        writeComment();
+        Toast.makeText(this, "댓글이 등록되었습니다!", Toast.LENGTH_SHORT).show();
+        finish();
+        startActivity(getIntent());
+    }
+
 
     public void onClickLike(View v){
 
@@ -370,11 +402,4 @@ public class DetailedPost extends AppCompatActivity {
         });
     }
 
-    //댓글 시간순으로 정렬
-    public class CommentComparator implements Comparator<Comment> {
-        @Override
-        public int compare(Comment o1, Comment o2) {
-            return o1.getCreated_at().compareTo(o2.getCreated_at());
-        }
-    }
 }
