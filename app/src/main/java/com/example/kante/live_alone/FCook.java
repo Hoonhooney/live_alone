@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -54,18 +55,18 @@ public class FCook extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_cook, container, false);
+        View v = inflater.inflate(R.layout.home_fragments, container, false);
         FirebaseFirestore.setLoggingEnabled(true);
         fs = FirebaseFirestore.getInstance();
 
         pgsBar = (ProgressBar) v.findViewById(R.id.progress_bar);
 
         //피드 카드뷰 생성
-        recyclerView = (RecyclerView) v.findViewById(R.id.feeds_cook);
+        recyclerView = (RecyclerView) v.findViewById(R.id.feeds);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        mAdapter = new RecyclerAdapter(getContext(), mArrayList, R.layout.fragment_cook);
+        mAdapter = new RecyclerAdapter(getContext(), mArrayList, R.layout.home_fragments);
 
 //        //데이터 정렬
 //        getListItems();
@@ -96,6 +97,16 @@ public class FCook extends Fragment {
                     isScrolling = false;
                     fetchData();
                 }
+            }
+        });
+
+
+        final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout)v.findViewById(R.id.swipe_layout);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getListItems();
+                swipeContainer.setRefreshing(false);
             }
         });
 

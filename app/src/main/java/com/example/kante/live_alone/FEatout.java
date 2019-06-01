@@ -53,18 +53,18 @@ public class FEatout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_eatout, container, false);
+        View v = inflater.inflate(R.layout.home_fragments, container, false);
         FirebaseFirestore.setLoggingEnabled(true);
         fs = FirebaseFirestore.getInstance();
 
         pgsBar = (ProgressBar) v.findViewById(R.id.progress_bar);
 
         //피드 카드뷰 생성
-        recyclerView = (RecyclerView) v.findViewById(R.id.feeds_eatout);
+        recyclerView = (RecyclerView) v.findViewById(R.id.feeds);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        mAdapter = new RecyclerAdapter(getContext(), mArrayList, R.layout.fragment_eatout);
+        mAdapter = new RecyclerAdapter(getContext(), mArrayList, R.layout.home_fragments);
 
 //        //데이터 정렬
 //        getListItems();
