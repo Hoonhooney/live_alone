@@ -73,6 +73,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.body.setLayoutParams(l);
         }
         holder.post_id= post.getId();
+        holder.post_category = post.getCategory();
 
         //like count 설정
         firestore.collection("likes").whereEqualTo("post_id",post.id).whereEqualTo("status","active").get()
@@ -152,6 +153,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private String post_id;
         private TextView like_counts;
         private ImageView like;
+        private String post_category;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -181,6 +183,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     intent.putExtra("TIME", pTime);
                     intent.putExtra("URL", url);
                     intent.putExtra("POSTID",post_id);
+                    intent.putExtra("CATEGORY",post_category);
                     context.startActivity(intent);
                 }
             });
