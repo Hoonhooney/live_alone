@@ -137,7 +137,7 @@ public class DetailedPost extends AppCompatActivity {
 //        if (!comments.isEmpty())
 ////            comments.clear();
         Log.d("qweqweqwe", "aaaaaaaa");
-        firebaseFirestore.collection("comments").whereEqualTo("post_id",post_id).get()
+        firebaseFirestore.collection("comments").whereEqualTo("post_id",post_id).whereEqualTo("status","active").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -158,6 +158,7 @@ public class DetailedPost extends AppCompatActivity {
                         Log.d("qweqweqwe", "아무내용이없습니다");
                     }
                 });
+
 
 
     }
@@ -255,7 +256,9 @@ public class DetailedPost extends AppCompatActivity {
         String context = contextComment.getText().toString();
         docData.put("context", context);
         docData.put("user_id", firebaseAuth.getUid());
+        docData.put("nickname", user.nickname);
         docData.put("post_id", post_id);
+        docData.put("status","active");
         docData.put("id", comment.getId());
 
         // 댓글 날짜 DB
@@ -273,6 +276,31 @@ public class DetailedPost extends AppCompatActivity {
         Toast.makeText(this, "댓글이 등록되었습니다!", Toast.LENGTH_SHORT).show();
         finish();
         startActivity(getIntent());
+    }
+
+    public void onClickCommentDelete(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("댓글 삭제");
+        builder.setMessage("정말 삭제하시겠습니까?");
+
+        int a = commentListView.getPositionForView(v);
+        final String commentID = comments.get(a).id;
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        firebaseFirestore.collection("comments").document(commentID).update("status", "deactivated");
+                        Toast.makeText(getApplicationContext(),"댓글이 삭제되었습니다.",Toast.LENGTH_LONG).show();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        builder.show();
     }
 
     public void onClickLike(View v){
@@ -300,16 +328,20 @@ public class DetailedPost extends AppCompatActivity {
 
                             batch.set(like,docData);
                             batch.commit();
+
+                            Toast.makeText(getApplicationContext(),"좋아요",Toast.LENGTH_LONG).show();
                         }else {
                             Like l = queryDocumentSnapshots.toObjects(Like.class).get(0);
                             if (l.status.equals("active")) {
                                 Log.d("qweasdzxc", "zxc");
                                 firebaseFirestore.collection("likes").document(l.id).update("status", "deactivated");
                                 buttonLike.setImageResource(R.drawable.like);
+                                Toast.makeText(getApplicationContext(),"좋아요 취소",Toast.LENGTH_LONG).show();
                             } else {
                                 Log.d("qweasdzxc", "qqq");
                                 firebaseFirestore.collection("likes").document(l.id).update("status", "active");
                                 buttonLike.setImageResource(R.drawable.like_clicked);
+                                Toast.makeText(getApplicationContext(),"좋아요",Toast.LENGTH_LONG).show();
                             }
                         }
                     }
