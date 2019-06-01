@@ -13,6 +13,7 @@ public class Comment {
     public String user_id;
     public String post_id;
     public String context;
+    public String nickname;
     public String created_at;
 
 
@@ -32,7 +33,7 @@ public class Comment {
     public String getCreated_at() {
         return created_at;
     }
-
+    public String getNickname(){return nickname;}
     public String getPost_id() {
         return post_id;
     }
@@ -46,6 +47,7 @@ public class Comment {
         HashMap<String, Object> result = new HashMap<>();
         result.put("user_id", user_id);
         result.put("post_id", post_id);
+        result.put("nickname", nickname);
         result.put("context", context);
         result.put("created_at",created_at);
         return result;
