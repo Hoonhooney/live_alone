@@ -110,22 +110,22 @@ public class HomeFeed extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void refresh(View view){
-        switch(fr.getId()){
-            case R.layout.fragment_cook:
-                ((FCook)fr).getListItems();
-                break;
-            case R.layout.fragment_room:
-                ((FRoom)fr).getListItems();
-                break;
-            case R.layout.fragment_tips:
-                ((FTips)fr).getListItems();
-                break;
-            case R.layout.fragment_activities:
-                ((FActivities)fr).getListItems();
-                break;
-        }
-    }
+//    public void refresh(View view){
+//        switch(fr.getId()){
+//            case R.layout.fragment_cook:
+//                ((FCook)fr).getListItems();
+//                break;
+//            case R.layout.fragment_room:
+//                ((FRoom)fr).getListItems();
+//                break;
+//            case R.layout.fragment_tips:
+//                ((FTips)fr).getListItems();
+//                break;
+//            case R.layout.fragment_activities:
+//                ((FActivities)fr).getListItems();
+//                break;
+//        }
+//    }
 
     public void menuClick(View v){
         PopupMenu popup = new PopupMenu(getApplicationContext(), v);

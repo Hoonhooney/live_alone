@@ -119,8 +119,7 @@
         android:layout_height="60dp"
         android:layout_alignRight="@id/fragment_container"
         android:layout_alignBottom="@id/fragment_container"
-        android:background="@drawable/addpost"
-        android:onClick="refresh" />
+        android:background="@drawable/addpost" />
 
     <Button
         android:id="@+id/refresh"
@@ -129,6 +128,6 @@
         android:layout_above="@id/addpost"
         android:layout_alignRight="@id/fragment_container"
         android:background="@drawable/refresh"
-        android:onClick="refresh" />
+        android:visibility="gone" />
 
 </RelativeLayout>
