@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +21,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthActionCodeException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * Demonstrate Firebase Authentication without a password, using a link sent to an
@@ -31,10 +35,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String KEY_PENDING_EMAIL = "key_pending_email";
 
     private FirebaseAuth mAuth;
-
-    private Button mSendLinkButton;
-    private Button mSignInButton;
-    private Button mSignOutButton;
+    private FirebaseFirestore firebaseFirestore;
+//    private Button mSendLinkButton;
+//    private Button mSignInButton;
+//    private Button mSignOutButton;
 
     private EditText mEmailField;
     private TextView mStatusText;
@@ -49,51 +53,52 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
-        mSendLinkButton = findViewById(R.id.passwordlessSendEmailButton);
-        mSignInButton = findViewById(R.id.passwordlessSignInButton);
-        mSignOutButton = findViewById(R.id.signOutButton);
+//        mSendLinkButton = findViewById(R.id.passwordlessSendEmailButton);
+//        mSignInButton = findViewById(R.id.passwordlessSignInButton);
+//        mSignOutButton = findViewById(R.id.signOutButton);
 
-        mEmailField = findViewById(R.id.fieldEmail);
-        mStatusText = findViewById(R.id.status);
+//        mEmailField = findViewById(R.id.fieldEmail);
+//        mStatusText = findViewById(R.id.status);
 
-        mSendLinkButton.setOnClickListener(this);
-        mSignInButton.setOnClickListener(this);
-        mSignOutButton.setOnClickListener(this);
+//        mSendLinkButton.setOnClickListener(this);
+//        mSignInButton.setOnClickListener(this);
+//        mSignOutButton.setOnClickListener(this);
 
         // Restore the "pending" email address
-        if (savedInstanceState != null) {
-            mPendingEmail = savedInstanceState.getString(KEY_PENDING_EMAIL, null);
-            mEmailField.setText(mPendingEmail);
-        }
+//        if (savedInstanceState != null) {
+//            mPendingEmail = savedInstanceState.getString(KEY_PENDING_EMAIL, null);
+//            mEmailField.setText(mPendingEmail);
+//        }
 
         // Check if the Intent that started the Activity contains an email sign-in link.
         checkIntent(getIntent());
 
-        Button goHomeFeed = findViewById(R.id.btn_homefeed);
+        Button goHomeFeed = findViewById(R.id.btn_goEnterdetailed);
         goHomeFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btn_gohome();
+                showProgressDialog();
+                mAuth.getCurrentUser().reload()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                updateUI(mAuth.getCurrentUser());
+                                hideProgressDialog();
+                            }
+                        });
             }
         });
+//
+//        Button goPosting = findViewById(R.id.btn_goPosting);
+//        goPosting.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                btn_goPosting();
+//            }
+//        });
 
-        Button goPosting = findViewById(R.id.btn_goPosting);
-        goPosting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn_goPosting();
-            }
-        });
-
-        Button logOut = findViewById(R.id.btn_logout);
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                btn_gologin();
-            }
-        });
     }
 
     public void btn_gologin(){
@@ -121,21 +126,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void updateUI(@Nullable FirebaseUser user) {
         if (user != null) {
-            mStatusText.setText(getString(R.string.passwordless_status_fmt,
-                    user.getEmail(), user.isEmailVerified()));
+            super.onStart();
+//            mStatusText.setText(getString(R.string.passwordless_status_fmt,
+//                    user.getEmail(), user.isEmailVerified()));
 
-            findViewById(R.id.mainFields).setVisibility(View.VISIBLE);
-            findViewById(R.id.passwordlessButtons).setVisibility(View.VISIBLE);
-            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
+//            findViewById(R.id.mainFields).setVisibility(View.VISIBLE);
+//            findViewById(R.id.passwordlessButtons).setVisibility(View.VISIBLE);
+//            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
             if(user.isEmailVerified()){
                 goHomeFeed();
+            }else {
+                Toast.makeText(MainActivity.this, "아직 인증이 되지 않았습니다!!", Toast.LENGTH_SHORT).show();
             }
         } else {
-            findViewById(R.id.mainFields).setVisibility(View.VISIBLE);
-            findViewById(R.id.passwordlessButtons).setVisibility(View.VISIBLE);
-            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
+//            findViewById(R.id.mainFields).setVisibility(View.VISIBLE);
+//            findViewById(R.id.passwordlessButtons).setVisibility(View.VISIBLE);
+//            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
         }
     }
+
+
     private void goHomeFeed(){
         Intent intent = new Intent(this, HomeFeed.class);
         startActivity(intent);
@@ -147,11 +157,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         checkIntent(intent);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(KEY_PENDING_EMAIL, mPendingEmail);
-    }
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putString(KEY_PENDING_EMAIL, mPendingEmail);
+//    }
 
     /**
      * Check to see if the Intent has an email link, and if so set up the UI accordingly.
@@ -160,16 +170,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     private void checkIntent(@Nullable Intent intent) {
         if (intentHasEmailLink(intent)) {
-            mEmailLink = intent.getData().toString();
+//            mEmailLink = intent.getData().toString();
 
-            mStatusText.setText(R.string.status_link_found);
-            mSendLinkButton.setEnabled(false);
-            mSignInButton.setEnabled(true);
+//            mStatusText.setText(R.string.status_link_found);
+//            mSendLinkButton.setEnabled(false);
+//            mSignInButton.setEnabled(true);
 
         } else {
-            mStatusText.setText(R.string.status_email_not_sent);
-            mSendLinkButton.setEnabled(true);
-            mSignInButton.setEnabled(false);
+//            mStatusText.setText(R.string.status_email_not_sent);
+//            mSendLinkButton.setEnabled(true);
+//            mSignInButton.setEnabled(false);
         }
     }
 
@@ -215,14 +225,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             showSnackbar("Sign-in link sent!");
 
                             mPendingEmail = email_new;
-                            mStatusText.setText(R.string.status_email_sent);
+//                            mStatusText.setText(R.string.status_email_sent);
                         } else {
                             Exception e = task.getException();
                             Log.w(TAG, "Could not send link", e);
                             showSnackbar("Failed to send link.");
 
                             if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                                mEmailField.setError("Invalid email address.");
+//                                mEmailField.setError("Invalid email address.");
                             }
                         }
                     }
@@ -249,8 +259,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmailLink:success");
 
-                            mEmailField.setText(null);
+//                            mEmailField.setText(null);
                             updateUI(task.getResult().getUser());
+
                         } else {
                             Log.w(TAG, "signInWithEmailLink:failure", task.getException());
                             updateUI(null);
@@ -263,32 +274,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 });
     }
 
-    private void onSendLinkClicked() {
-        String email = mEmailField.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Email must not be empty.");
-            return;
-        }
+//    private void onSendLinkClicked() {
+//        String email = mEmailField.getText().toString();
+//        if (TextUtils.isEmpty(email)) {
+//            mEmailField.setError("Email must not be empty.");
+//            return;
+//        }
+//
+//        sendSignInLink(email);
+//    }
+//
+//    private void onSignInClicked() {
+//        String email = mEmailField.getText().toString();
+//        if (TextUtils.isEmpty(email)) {
+//            mEmailField.setError("Email must not be empty.");
+//            return;
+//        }
+//
+//        signInWithEmailLink(email, mEmailLink);
+//    }
 
-        sendSignInLink(email);
-    }
-
-    private void onSignInClicked() {
-        String email = mEmailField.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Email must not be empty.");
-            return;
-        }
-
-        signInWithEmailLink(email, mEmailLink);
-    }
-
-    private void onSignOutClicked() {
-        mAuth.signOut();
-
-        updateUI(null);
-        mStatusText.setText(R.string.status_email_not_sent);
-    }
+//    private void onSignOutClicked() {
+//        mAuth.signOut();
+//
+//        updateUI(null);
+//        mStatusText.setText(R.string.status_email_not_sent);
+//    }
 
 //    private void updateUI(@Nullable FirebaseUser user) {
 //        if (user != null) {
@@ -311,16 +322,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.passwordlessSendEmailButton:
-                onSendLinkClicked();
-                break;
-            case R.id.passwordlessSignInButton:
-                onSignInClicked();
-                break;
-            case R.id.signOutButton:
-                onSignOutClicked();
-                break;
-        }
+//        switch (view.getId()) {
+//            case R.id.passwordlessSendEmailButton:
+//                onSendLinkClicked();
+//                break;
+//            case R.id.passwordlessSignInButton:
+//                onSignInClicked();
+//                break;
+//            case R.id.signOutButton:
+//                onSignOutClicked();
+//                break;
+//        }
     }
 }
