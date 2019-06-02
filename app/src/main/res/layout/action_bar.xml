@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/actionbar"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/actionbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/bootstrap_brand_secondary_fill"
     android:elevation="10dp"
-    android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="horizontal">
 
     <Button
         android:id="@+id/menu"
