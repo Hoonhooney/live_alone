@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
+import com.example.kante.live_alone.Fragments.FTrans;
 import com.example.kante.live_alone.MyMessages;
 import com.example.kante.live_alone.StartAppActivities.EnterDetailed;
 import com.example.kante.live_alone.Fragments.FActivities;
@@ -108,6 +109,8 @@ public class HomeFeed extends AppCompatActivity {
             case R.id.eatout:
                 fr = new FEatout();
                 break;
+            case R.id.trans:
+                fr = new FTrans();
         }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

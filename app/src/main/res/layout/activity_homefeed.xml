@@ -25,7 +25,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/school"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -96,11 +95,12 @@
                         android:onClick="selectCategory" />
 
                     <Button
-                        android:id="@+id/button6"
+                        android:id="@+id/trans"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
                         android:layout_marginStart="20dp"
-                        android:background="@drawable/tips" />
+                        android:background="@drawable/trans"
+                        android:onClick="selectCategory" />
                 </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>
