@@ -1,10 +1,7 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.PostActivities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,18 +14,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.kante.live_alone.Adapters.CommentAdapter;
+import com.example.kante.live_alone.Classes.Comment;
+import com.example.kante.live_alone.Classes.Like;
+import com.example.kante.live_alone.Classes.User;
+import com.example.kante.live_alone.MyMenu;
+import com.example.kante.live_alone.R;
+import com.example.kante.live_alone.SendMessage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.common.base.Predicate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -39,13 +38,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DetailedPost extends AppCompatActivity {
     private FirebaseStorage fs;
@@ -358,6 +355,7 @@ public class DetailedPost extends AppCompatActivity {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if(queryDocumentSnapshots.isEmpty()){
+                            /* 좋아요 객체가 없을때 */
                             WriteBatch batch = firebaseFirestore.batch();
                             DocumentReference like = firebaseFirestore.collection("likes").document();
                             Map<String, Object> docData = new HashMap<>();
@@ -379,6 +377,7 @@ public class DetailedPost extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(),"좋아요",Toast.LENGTH_LONG).show();
                         }else {
+                            /* 좋아요 객체가 있을 때*/
                             Like l = queryDocumentSnapshots.toObjects(Like.class).get(0);
                             if (l.status.equals("active")) {
                                 Log.d("qweasdzxc", "zxc");
@@ -416,6 +415,15 @@ public class DetailedPost extends AppCompatActivity {
                 batch.commit();
             }
         });
+    }
+
+    /**********************************
+     *             쪽지 관련            *
+     **********************************/
+    public void onClicksendMessage(View v){
+        Intent intent = new Intent(this, SendMessage.class);
+        intent.putExtra("receiver_id",getIntent().getStringExtra("posting_user_id"));
+        startActivity(intent);
     }
 
 }

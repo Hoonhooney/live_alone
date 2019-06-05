@@ -1,17 +1,11 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.Classes;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,16 +34,16 @@ public class Post {
     public String getImageURL() {
         return image_url;
     }
-    String getTitle() {
+    public String getTitle() {
         return this.title;
     }
-    String getBody() {
+    public String getBody() {
         return this.body;
     }
-    String getUid() { return this.user_id;}
-    String getCategory() {return this.category;}
-    String getCreated_at() {return this.created_at;}
-    String getId(){ return this.id;}
+    public String getUid() { return this.user_id;}
+    public String getCategory() {return this.category;}
+    public String getCreated_at() {return this.created_at;}
+    public String getId(){ return this.id;}
 
     @Exclude
     public Map<String, Object> toMap() {

@@ -1,6 +1,5 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -14,27 +13,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.kante.live_alone.Classes.Post;
+import com.example.kante.live_alone.R;
+import com.example.kante.live_alone.Adapters.RecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class FEatout extends Fragment {
+public class FTips extends Fragment {
 
     private FirebaseFirestore fs;
     //    static final int LIMIT = 50;
@@ -46,7 +38,7 @@ public class FEatout extends Fragment {
     int currentItems, totalItems, scrollOutItems;
     ProgressBar pgsBar;
 
-    public FEatout() {
+    public FTips() {
         // Required empty public constructor
     }
 
@@ -55,6 +47,7 @@ public class FEatout extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.home_fragments, container, false);
+
         FirebaseFirestore.setLoggingEnabled(true);
         fs = FirebaseFirestore.getInstance();
 
@@ -70,19 +63,14 @@ public class FEatout extends Fragment {
 //        //데이터 정렬
 //        getListItems();
 
+        //스크롤
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(!recyclerView.canScrollVertically(-1) || !recyclerView.canScrollVertically(1)){
-                    isScrolling = true;
-                }else if(recyclerView.computeVerticalScrollOffset() == 0){
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
                     isScrolling = true;
                 }
-
-//                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-//                    isScrolling = true;
-//                }
             }
 
             @Override
@@ -92,7 +80,7 @@ public class FEatout extends Fragment {
                 totalItems = layoutManager.getItemCount();
                 scrollOutItems = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
 
-                if(isScrolling && (currentItems + scrollOutItems >= totalItems)){
+                if(isScrolling && (currentItems + scrollOutItems == totalItems)){
                     isScrolling = false;
                     fetchData();
                 }
@@ -144,11 +132,11 @@ public class FEatout extends Fragment {
         }, 1000);
     }
 
-    public void getListItems() {
+    public void getListItems(){
         if (!mArrayList.isEmpty())
             mArrayList.clear();
         Log.d("qpoqop", "whiatqwdqw?");
-        fs.collection("posts").whereEqualTo("category", "FEatout").get()
+        fs.collection("posts").whereEqualTo("category", "FTips").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -163,9 +151,8 @@ public class FEatout extends Fragment {
                             }
                             types.sort(new CustomComparator().reversed());
                             if (types.size() < 10) {
-                                for (int i = 0; i < types.size(); i++) {
+                                for (int i = 0; i < types.size(); i++)
                                     mArrayList.add(types.get(i));
-                                }
                             } else {
                                 for (int j = 0; j < 10; j++)
                                     mArrayList.add(types.get(j));
@@ -181,7 +168,6 @@ public class FEatout extends Fragment {
                     }
                 });
     }
-
     public class CustomComparator implements Comparator<Post> {
         @Override
         public int compare(Post o1, Post o2) {

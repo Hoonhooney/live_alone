@@ -1,14 +1,9 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.kante.live_alone.Classes.Like;
+import com.example.kante.live_alone.Classes.Post;
+import com.example.kante.live_alone.Classes.User;
+import com.example.kante.live_alone.PostActivities.DetailedPost;
+import com.example.kante.live_alone.R;
+import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.common.base.Predicate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,12 +27,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Text;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
 
 //피드 어댑터
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -43,14 +46,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private StorageReference storageRef;
     private FirebaseFirestore firestore;
     private FirebaseAuth firebaseAuth;
+    private String posting_user_id;
     private DocumentReference documentReference;
+    private List<User> users;
 //    Bitmap bitmap;
 
     public RecyclerAdapter(Context context, List<Post> posts, int item_layout) {
         this.context = context;
         this.posts = posts;
         this.item_layout = item_layout;
+
+
+
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -59,12 +68,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         storageRef = storage.getReferenceFromUrl("gs://hcslivealone.appspot.com");
         firestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        // TODO : 여기에다가 likes 데이터 불러온거 저장해놓고 onBindViewHolder에서 settext만 해주면 될까?
+        // TODO : users의 닉네임도 마찬가지
+
         return new ViewHolder(v);
     }
 
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
         final Post post = posts.get(position);
+//        Iterator<User> iterator = users.iterator();
+//        User user = null;
+//        while (iterator.hasNext()) {
+//            user = iterator.next();
+//            if (user.user_id.equals(post.getUid())) {
+//                break;
+//            }
+//        }
         holder.title.setText(post.getTitle());
         holder.body.setText(post.getBody());
         if(post.getBody().length() > 200){
@@ -100,7 +122,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                         }
                     }
                 });
-
+//        holder.feed_nickname.setText(user.getNickname());
 
         //리사이클러뷰 각각의 아이템에 유저 닉네임 보이도록 표시
         firestore.collection("users").document(post.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -111,10 +133,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 }else{
                     User user = documentSnapshot.toObject(User.class);
                     String nickname = user.getNickname();
+                    posting_user_id = user.getUser_id();
                     holder.feed_nickname.setText(nickname);
                 }
             }
         });
+
         try{
             Date date = new SimpleDateFormat("yyyyMMddkkmmss").parse(post.getCreated_at());
             String format = new SimpleDateFormat("yyyy/MM/dd kk:mm").format(date);
@@ -183,6 +207,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     intent.putExtra("TIME", pTime);
                     intent.putExtra("URL", url);
                     intent.putExtra("POSTID",post_id);
+                    intent.putExtra("posting_user_id",posting_user_id);
                     intent.putExtra("CATEGORY",post_category);
                     context.startActivity(intent);
                 }

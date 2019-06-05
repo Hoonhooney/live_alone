@@ -1,4 +1,4 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.Fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,19 +13,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
+import com.example.kante.live_alone.Classes.Post;
+import com.example.kante.live_alone.R;
+import com.example.kante.live_alone.Adapters.RecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class FTips extends Fragment {
+public class FActivities extends Fragment {
 
     private FirebaseFirestore fs;
     //    static final int LIMIT = 50;
@@ -37,7 +38,7 @@ public class FTips extends Fragment {
     int currentItems, totalItems, scrollOutItems;
     ProgressBar pgsBar;
 
-    public FTips() {
+    public FActivities() {
         // Required empty public constructor
     }
 
@@ -135,7 +136,7 @@ public class FTips extends Fragment {
         if (!mArrayList.isEmpty())
             mArrayList.clear();
         Log.d("qpoqop", "whiatqwdqw?");
-        fs.collection("posts").whereEqualTo("category", "FTips").get()
+        fs.collection("posts").whereEqualTo("category", "FActivities").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -167,6 +168,7 @@ public class FTips extends Fragment {
                     }
                 });
     }
+
     public class CustomComparator implements Comparator<Post> {
         @Override
         public int compare(Post o1, Post o2) {

@@ -1,6 +1,5 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.StartAppActivities;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PixelFormat;
@@ -11,8 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import android.support.v7.app.AppCompatActivity;
-
+import com.example.kante.live_alone.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashScreen extends Activity {

@@ -1,6 +1,5 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -12,32 +11,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.kante.live_alone.Classes.Post;
+import com.example.kante.live_alone.R;
+import com.example.kante.live_alone.Adapters.RecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class FCook extends Fragment {
+public class FEatout extends Fragment {
 
     private FirebaseFirestore fs;
-//    static final int LIMIT = 50;
+    //    static final int LIMIT = 50;
     private ArrayList<Post> mArrayList = new ArrayList<>();
     private List<Post> types;
     RecyclerView recyclerView;
@@ -46,8 +37,7 @@ public class FCook extends Fragment {
     int currentItems, totalItems, scrollOutItems;
     ProgressBar pgsBar;
 
-
-    public FCook() {
+    public FEatout() {
         // Required empty public constructor
     }
 
@@ -99,8 +89,6 @@ public class FCook extends Fragment {
                 }
             }
         });
-
-
         final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout)v.findViewById(R.id.swipe_layout);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -151,7 +139,7 @@ public class FCook extends Fragment {
         if (!mArrayList.isEmpty())
             mArrayList.clear();
         Log.d("qpoqop", "whiatqwdqw?");
-        fs.collection("posts").whereEqualTo("category", "FCook").get()
+        fs.collection("posts").whereEqualTo("category", "FEatout").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

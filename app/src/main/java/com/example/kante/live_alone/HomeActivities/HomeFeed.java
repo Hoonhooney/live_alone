@@ -1,4 +1,4 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.HomeActivities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -13,6 +13,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
+import com.example.kante.live_alone.MyMessages;
+import com.example.kante.live_alone.StartAppActivities.EnterDetailed;
+import com.example.kante.live_alone.Fragments.FActivities;
+import com.example.kante.live_alone.Fragments.FCook;
+import com.example.kante.live_alone.Fragments.FEatout;
+import com.example.kante.live_alone.Fragments.FRoom;
+import com.example.kante.live_alone.Fragments.FTips;
+import com.example.kante.live_alone.MyMenu;
+import com.example.kante.live_alone.PostActivities.Posting;
+import com.example.kante.live_alone.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -136,7 +146,12 @@ public class HomeFeed extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.go_mymenu:
                         Intent intent = new Intent(HomeFeed.this, MyMenu.class);
+                        intent.putExtra("nickname",nickname);
                         startActivity(intent);
+                        break;
+                    case R.id.messages: // TODO : 쪽지함으로
+                        Intent i = new Intent(HomeFeed.this, MyMessages.class);
+                        startActivity(i);
                         break;
                 }
                 return false;

@@ -1,4 +1,4 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.Fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,24 +11,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
+import com.example.kante.live_alone.Classes.Post;
+import com.example.kante.live_alone.R;
+import com.example.kante.live_alone.Adapters.RecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class FRoom extends Fragment {
+public class FCook extends Fragment {
 
     private FirebaseFirestore fs;
-    //    static final int LIMIT = 50;
+//    static final int LIMIT = 50;
     private ArrayList<Post> mArrayList = new ArrayList<>();
     private List<Post> types;
     RecyclerView recyclerView;
@@ -37,7 +37,8 @@ public class FRoom extends Fragment {
     int currentItems, totalItems, scrollOutItems;
     ProgressBar pgsBar;
 
-    public FRoom() {
+
+    public FCook() {
         // Required empty public constructor
     }
 
@@ -46,7 +47,6 @@ public class FRoom extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.home_fragments, container, false);
-
         FirebaseFirestore.setLoggingEnabled(true);
         fs = FirebaseFirestore.getInstance();
 
@@ -62,14 +62,19 @@ public class FRoom extends Fragment {
 //        //데이터 정렬
 //        getListItems();
 
-        //스크롤
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                if(!recyclerView.canScrollVertically(-1) || !recyclerView.canScrollVertically(1)){
+                    isScrolling = true;
+                }else if(recyclerView.computeVerticalScrollOffset() == 0){
                     isScrolling = true;
                 }
+
+//                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+//                    isScrolling = true;
+//                }
             }
 
             @Override
@@ -79,12 +84,14 @@ public class FRoom extends Fragment {
                 totalItems = layoutManager.getItemCount();
                 scrollOutItems = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
 
-                if(isScrolling && (currentItems + scrollOutItems == totalItems)){
+                if(isScrolling && (currentItems + scrollOutItems >= totalItems)){
                     isScrolling = false;
                     fetchData();
                 }
             }
         });
+
+
         final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout)v.findViewById(R.id.swipe_layout);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -131,11 +138,11 @@ public class FRoom extends Fragment {
         }, 1000);
     }
 
-    public void getListItems(){
+    public void getListItems() {
         if (!mArrayList.isEmpty())
             mArrayList.clear();
         Log.d("qpoqop", "whiatqwdqw?");
-        fs.collection("posts").whereEqualTo("category", "FRoom").get()
+        fs.collection("posts").whereEqualTo("category", "FCook").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -150,8 +157,9 @@ public class FRoom extends Fragment {
                             }
                             types.sort(new CustomComparator().reversed());
                             if (types.size() < 10) {
-                                for (int i = 0; i < types.size(); i++)
+                                for (int i = 0; i < types.size(); i++) {
                                     mArrayList.add(types.get(i));
+                                }
                             } else {
                                 for (int j = 0; j < 10; j++)
                                     mArrayList.add(types.get(j));

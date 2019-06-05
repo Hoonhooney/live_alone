@@ -1,4 +1,4 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.Classes;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.database.Exclude;
