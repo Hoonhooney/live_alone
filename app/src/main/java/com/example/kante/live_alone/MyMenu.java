@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.example.kante.live_alone.Classes.User;
+import com.example.kante.live_alone.StartAppActivities.SplashScreen;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,8 +60,8 @@ public class MyMenu extends AppCompatActivity {
         text_created_at.setText(timeStamp);
 
 
-        getUser();
-
+//        getUser();
+        text_nickname.setText(getIntent().getStringExtra("nickname"));
         Button btn_logout = findViewById(R.id.button_logout);
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
