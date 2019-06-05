@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SendMessage">
+
+    <Button
+        android:id="@+id/btn_sendmessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center"
+        android:background="@color/bootstrap_brand_primary"
+        android:onClick="onClickSendButton"
+        android:text="보내기" />
+
+    <EditText
+        android:id="@+id/message_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/bootstrap_h5_hori_padding"
+        android:ems="10"
+        android:hint="제목"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/message_context"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_margin="@dimen/bootstrap_h5_hori_padding"
+        android:ems="10"
+        android:hint="내용"
+        android:inputType="textMultiLine" />
+</LinearLayout>
