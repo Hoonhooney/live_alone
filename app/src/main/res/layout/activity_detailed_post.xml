@@ -112,6 +112,22 @@
                         android:textColor="@color/white"
                         android:visibility="gone" />
 
+                    <TextView
+                        android:id="@+id/note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center_horizontal"
+                        android:lineSpacingExtra="0.7sp"
+                        android:text="상품 거래 관련 문의(거래 장소, 시간 등)를 원하시면\n해당 글 게시자에게 쪽지를 보내주세요!"
+                        android:textAlignment="gravity"
+                        android:textColor="@color/light_olive_green"
+                        android:textIsSelectable="false"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 

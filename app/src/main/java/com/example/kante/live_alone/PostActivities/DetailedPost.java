@@ -51,6 +51,7 @@ public class DetailedPost extends AppCompatActivity {
     private TextView dBody;
     private TextView dUid;
     private TextView dTime;
+    private TextView note;
     private String dUrl;
     private StorageReference sr;
     private Button deleteButton;
@@ -101,6 +102,7 @@ public class DetailedPost extends AppCompatActivity {
         contextComment = findViewById(R.id.input_comment_context);
         buttonLike = findViewById(R.id.btn_like);
         findLocationButton = findViewById(R.id.find_location);
+        note = findViewById(R.id.note);
 
         Intent intent = getIntent();
         dTitle.setText(intent.getStringExtra("TITLE"));
@@ -121,6 +123,12 @@ public class DetailedPost extends AppCompatActivity {
                 }
             });
         }
+
+        //중고품 거래 기능 글에만 note 텍스트뷰 보이게
+        if(intent.getStringExtra("CATEGORY").equals("FTrans")){
+            note.setVisibility(View.VISIBLE);
+        }
+
         dUrl = getIntent().getStringExtra("URL");
         if(dUrl != null){
             dImage.setVisibility(View.VISIBLE);
