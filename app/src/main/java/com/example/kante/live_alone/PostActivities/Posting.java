@@ -110,23 +110,21 @@ public class Posting extends AppCompatActivity {
                 String transBody;
                 getUserInfo(fbUser);
                 Log.d("GGGG","QWEQWE");
-                if(imageView.getDrawable()==null){
-                    if(getIntent().getStringExtra("Category").equals("FEatout")){
-                        if(foodFrom != null)
-                            eatoutBody = "음식 종류 : "+foodFrom+"\n\n추천 이유 : "+text_reason.getText()+"\n\n기타 정보 : "+text_inf.getText();
+                if(imageView.getDrawable()==null) {
+                    if (getIntent().getStringExtra("Category").equals("FEatout")) {
+                        if (foodFrom != null)
+                            eatoutBody = "음식 종류 : " + foodFrom + "\n\n추천 이유 : " + text_reason.getText() + "\n\n기타 정보 : " + text_inf.getText();
                         writeNewPost(uid, nickname, text_title.getText().toString(), eatoutBody);
-                    }
-                    else if(getIntent().getStringExtra("Category").equals("FTrans")){
-                        transBody = "판매품 이름 : "+text_product.getText()+"\n\n가격 : "+text_cost.getText()+"원\n\n기타 정보 : "+text_inf.getText();
+                    } else if (getIntent().getStringExtra("Category").equals("FTrans")) {
+                        transBody = "판매품 이름 : " + text_product.getText() + "\n\n가격 : " + text_cost.getText() + "원\n\n기타 정보 : " + text_inf.getText();
                         writeNewPost(uid, nickname, text_title.getText().toString(), transBody);
-                    }
-                    else
+                    } else
                         writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
-                    if (validatePost()) {
+                    if(validatePost())
                         finish();
-                    }
                 }else{
-                    uploadImage();
+                    if(validatePost())
+                        uploadImage();
                     if(getIntent().getStringExtra("Category").equals("FEatout")){
                         if(foodFrom != null)
                             eatoutBody = "음식 종류 : "+foodFrom+"\n\n추천 이유 : "+text_reason.getText()+"\n\n기타 정보 : "+text_inf.getText();
@@ -138,9 +136,6 @@ public class Posting extends AppCompatActivity {
                     }
                     else
                         writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
-                    if (validatePost()) {
-                        finish();
-                    }
                 }
             }
         });
