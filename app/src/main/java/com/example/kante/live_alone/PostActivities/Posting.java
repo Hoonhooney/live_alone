@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -106,7 +107,7 @@ public class Posting extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String eatoutBody = null;
-                String transBody = null;
+                String transBody;
                 getUserInfo(fbUser);
                 Log.d("GGGG","QWEQWE");
                 if(imageView.getDrawable()==null){
@@ -121,7 +122,9 @@ public class Posting extends AppCompatActivity {
                     }
                     else
                         writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
-                    finish();
+                    if (validatePost()) {
+                        finish();
+                    }
                 }else{
                     uploadImage();
                     if(getIntent().getStringExtra("Category").equals("FEatout")){
@@ -129,12 +132,18 @@ public class Posting extends AppCompatActivity {
                             eatoutBody = "음식 종류 : "+foodFrom+"\n\n추천 이유 : "+text_reason.getText()+"\n\n기타 정보 : "+text_inf.getText();
                         writeNewPost(uid, nickname, text_title.getText().toString(), eatoutBody);
                     }
+                    else if(getIntent().getStringExtra("Category").equals("FTrans")){
+                        transBody = "판매품 이름 : "+text_product.getText()+"\n\n가격 : "+text_cost.getText()+"원\n\n기타 정보 : "+text_inf.getText();
+                        writeNewPost(uid, nickname, text_title.getText().toString(), transBody);
+                    }
                     else
                         writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
+                    if (validatePost()) {
+                        finish();
+                    }
                 }
             }
         });
-
 
         Button mymenu = findViewById(R.id.gotomymenu);
         mymenu.setOnClickListener(new View.OnClickListener() {
@@ -163,24 +172,26 @@ public class Posting extends AppCompatActivity {
     private void writeNewPost(String userId, String username, String title, String body) {
         WriteBatch batch = mFirestore.batch();
         DocumentReference posts = mFirestore.collection("posts").document();
-        Map<String, Object> docData = new HashMap<>();
-        docData.put("id",posts.getId());
-        docData.put("user_id", userId);
-        docData.put("user_name", username);
-        docData.put("email", email);
-        docData.put("title",title);
-        docData.put("body",body);
-        docData.put("category",getIntent().getStringExtra("Category"));
+        if(validatePost()){
+            Map<String, Object> docData = new HashMap<>();
+            docData.put("id",posts.getId());
+            docData.put("user_id", userId);
+            docData.put("user_name", username);
+            docData.put("email", email);
+            docData.put("title",title);
+            docData.put("body",body);
+            docData.put("category",getIntent().getStringExtra("Category"));
 
-        if(imagePath!=null){
-            docData.put("image_url",imagePath);
+            if(imagePath!=null){
+                docData.put("image_url",imagePath);
+            }
+            SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
+            String format = s.format(new Date());
+
+            docData.put("created_at",format);
+            batch.set(posts, docData);
+            batch.commit();
         }
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
-        String format = s.format(new Date());
-
-        docData.put("created_at",format);
-        batch.set(posts, docData);
-        batch.commit();
     }
 
     private void launchCamera() {
@@ -257,5 +268,29 @@ public class Posting extends AppCompatActivity {
 
     public void onRadioButtonClicked(View v){
         foodFrom = (String)((RadioButton) v).getText();
+    }
+
+    public boolean validatePost(){
+        boolean valid = true;
+
+        if(TextUtils.isEmpty(text_title.getText())){
+            text_title.setError("제목을 입력하세요!");
+            valid = false;
+        } else
+            text_title.setError(null);
+
+        if(getIntent().getStringExtra("Category").equals("FTrans")){
+            if(TextUtils.isEmpty(text_product.getText())){
+                text_product.setError("판매할 상품 이름을 입력하세요!");
+                valid = false;
+            } else
+                text_product.setError(null);
+            if(TextUtils.isEmpty(text_cost.getText())){
+                text_cost.setError("판매 가격을 입력하세요!");
+                valid = false;
+            } else
+                text_cost.setError(null);
+        }
+        return valid;
     }
 }
