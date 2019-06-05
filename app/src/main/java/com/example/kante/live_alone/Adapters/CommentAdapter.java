@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kante.live_alone.Classes.Comment;
@@ -74,9 +75,8 @@ public class CommentAdapter extends BaseAdapter {
             pe.printStackTrace();
         }
         if(user.getUid().equals(comment.getUser_id())){
-            Button deleteButton = (Button)convertView.findViewById(R.id.btn_comment_delete);
+            ImageView deleteButton = (ImageView)convertView.findViewById(R.id.btn_comment_delete);
             deleteButton.setVisibility(View.VISIBLE);
-
         }
         return convertView;
     }

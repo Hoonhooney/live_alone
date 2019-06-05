@@ -78,10 +78,11 @@
                         android:layout_marginRight="5dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
-                        android:background="@color/bootstrap_brand_success"
+                        android:background="@color/light_olive_green"
                         android:fontFamily="sans-serif"
                         android:onClick="onClicksendMessage"
-                        android:text="쪽지 보내기" />
+                        android:text="쪽지 보내기"
+                        android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/dp_posted_time"

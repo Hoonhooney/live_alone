@@ -59,16 +59,16 @@
                     android:text="comment"
                     android:textSize="15sp" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_comment_delete"
-                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:fontFamily="monospace"
+                    android:background="@color/fui_transparent"
                     android:onClick="onClickCommentDelete"
-                    android:text="삭제"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/delete" />
+
             </LinearLayout>
 
         </LinearLayout>

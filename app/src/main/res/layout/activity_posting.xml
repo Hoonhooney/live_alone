@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:background="@color/grey_300"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/xbuttonimage" />
+            app:srcCompat="@drawable/cross" />
 
         <com.beardedhen.androidbootstrap.BootstrapLabel
             android:layout_width="wrap_content"
