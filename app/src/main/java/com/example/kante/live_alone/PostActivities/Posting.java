@@ -49,6 +49,8 @@ public class Posting extends AppCompatActivity {
     private TextView text_context;
     private TextView text_reason;
     private TextView text_inf;
+    private TextView text_product;
+    private TextView text_cost;
     private String foodFrom;
     private String uid;
     private String email;
@@ -68,6 +70,8 @@ public class Posting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if(getIntent().getStringExtra("Category").equals("FEatout"))
             setContentView(R.layout.activity_posting_eatout);
+        else if(getIntent().getStringExtra("Category").equals("FTrans"))
+            setContentView(R.layout.activity_posting_transaction);
         else
             setContentView(R.layout.activity_posting);
         mFirestore = FirebaseFirestore.getInstance();
@@ -91,16 +95,18 @@ public class Posting extends AppCompatActivity {
         text_title = findViewById(R.id.text_title);
 
         text_reason = findViewById(R.id.text_reason);
+        text_product = findViewById(R.id.text_pname);
+        text_cost = findViewById(R.id.text_cost);
         text_inf = findViewById(R.id.inf);
 
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         users = mFirestore.collection("users").document(fbUser.getUid());
 
-
         postingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String eatoutBody = null;
+                String transBody = null;
                 getUserInfo(fbUser);
                 Log.d("GGGG","QWEQWE");
                 if(imageView.getDrawable()==null){
@@ -108,6 +114,10 @@ public class Posting extends AppCompatActivity {
                         if(foodFrom != null)
                             eatoutBody = "음식 종류 : "+foodFrom+"\n\n추천 이유 : "+text_reason.getText()+"\n\n기타 정보 : "+text_inf.getText();
                         writeNewPost(uid, nickname, text_title.getText().toString(), eatoutBody);
+                    }
+                    else if(getIntent().getStringExtra("Category").equals("FTrans")){
+                        transBody = "판매품 이름 : "+text_product.getText()+"\n\n가격 : "+text_cost.getText()+"원\n\n기타 정보 : "+text_inf.getText();
+                        writeNewPost(uid, nickname, text_title.getText().toString(), transBody);
                     }
                     else
                         writeNewPost(uid, nickname, text_title.getText().toString(), text_context.getText().toString());
