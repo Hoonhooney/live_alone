@@ -8,10 +8,9 @@
 
     <include
         android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         layout="@layout/action_bar"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card"
@@ -53,23 +52,36 @@
                         android:id="@+id/dp_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
                         android:text="Title"
                         android:textSize="35sp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/dp_user_id"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:text="@string/hint_user_id" />
+
+                    <Button
+                        android:id="@+id/button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:text="@string/hint_user_id" />
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:background="@color/bootstrap_brand_success"
+                        android:fontFamily="sans-serif"
+                        android:onClick="onClicksendMessage"
+                        android:text="쪽지 보내기" />
 
                     <TextView
                         android:id="@+id/dp_posted_time"
@@ -83,10 +95,10 @@
                         android:id="@+id/dp_body"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
                         android:text="body"
                         android:textSize="15sp"
                         android:textStyle="normal" />
@@ -141,7 +153,6 @@
 
         </LinearLayout>
     </ScrollView>
-
 
 
 </LinearLayout>

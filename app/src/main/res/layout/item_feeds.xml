@@ -40,7 +40,9 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:text="Title"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/detail"
@@ -49,7 +51,8 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="5dp"
-                        android:text="Write here" />
+                        android:text="Write here"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
 

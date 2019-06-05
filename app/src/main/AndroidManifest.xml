@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".StartAppActivities.MainActivity"
             android:label="@string/label_passwordless"
             android:launchMode="singleTop">
             <intent-filter>
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SplashScreen"
+            android:name=".StartAppActivities.SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@drawable/splash_img">
             <intent-filter>
@@ -37,14 +37,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeFeed" />
+        <activity android:name=".HomeActivities.HomeFeed" />
         <activity
-            android:name=".FirebaseUIActivity"
+            android:name=".StartAppActivities.FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
-        <activity android:name=".Posting" />
+        <activity android:name=".PostActivities.Posting" />
         <activity android:name=".MyMenu" />
-        <activity android:name=".DetailedPost" />
-        <activity android:name=".EnterDetailed" android:theme="@android:style/Theme.Dialog"></activity>
+        <activity android:name=".PostActivities.DetailedPost" />
+        <activity
+            android:name=".StartAppActivities.EnterDetailed"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".MyMessages" />
+        <activity android:name=".SendMessage"></activity>
     </application>
 
 </manifest>
