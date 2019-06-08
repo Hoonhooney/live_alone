@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.example.kante.live_alone.Classes.User;
 import com.example.kante.live_alone.MyMenu;
 import com.example.kante.live_alone.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
@@ -103,12 +105,12 @@ public class Posting extends AppCompatActivity {
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         users = mFirestore.collection("users").document(fbUser.getUid());
 
+        getUserInfo(fbUser);
         postingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String eatoutBody = null;
                 String transBody;
-                getUserInfo(fbUser);
                 Log.d("GGGG","QWEQWE");
                 if(imageView.getDrawable()==null) {
                     if (getIntent().getStringExtra("Category").equals("FEatout")) {
@@ -160,8 +162,15 @@ public class Posting extends AppCompatActivity {
 
     private void getUserInfo(FirebaseUser user){
         uid = user.getUid();
-        nickname = user.getDisplayName();
+//        nickname = user.getDisplayName();
         email = user.getEmail();
+        mFirestore.collection("users").document(uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User user = documentSnapshot.toObject(User.class);
+                nickname = user.getNickname();
+            }
+        });
     }
 
     private void writeNewPost(String userId, String username, String title, String body) {
@@ -174,6 +183,7 @@ public class Posting extends AppCompatActivity {
             docData.put("user_name", username);
             docData.put("email", email);
             docData.put("title",title);
+            docData.put("nickname",nickname);
             docData.put("body",body);
             docData.put("category",getIntent().getStringExtra("Category"));
 
