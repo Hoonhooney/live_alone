@@ -49,7 +49,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private String posting_user_id;
     private DocumentReference documentReference;
     private List<User> users;
-//    Bitmap bitmap;
 
     public RecyclerAdapter(Context context, List<Post> posts, int item_layout) {
         this.context = context;
