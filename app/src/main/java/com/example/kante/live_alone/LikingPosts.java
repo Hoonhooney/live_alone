@@ -21,11 +21,8 @@ import com.example.kante.live_alone.Classes.Post;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,7 +41,7 @@ public class LikingPosts extends AppCompatActivity {
 
     ProgressBar pgsBar;
 
-    private TextView mlpText01, mlpText02;
+    private TextView mlpText01;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +52,6 @@ public class LikingPosts extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         mlpText01 = findViewById(R.id.mlp_text01);
-        mlpText02 = findViewById(R.id.mlp_text02);
 
         recyclerView = (RecyclerView) findViewById(R.id.liking_feeds);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
@@ -108,8 +104,7 @@ public class LikingPosts extends AppCompatActivity {
                                         posts.sort(new CustomComparator().reversed());
                                         recyclerView.setAdapter(mAdapter);
                                         if(posts.size() == 0){
-                                            mlpText01.setVisibility(View.GONE);
-                                            mlpText02.setVisibility(View.VISIBLE);
+                                            mlpText01.setText("아직 좋아하는 게시글이 없네요ㅠ");
                                         }
                                     }
                                 }
