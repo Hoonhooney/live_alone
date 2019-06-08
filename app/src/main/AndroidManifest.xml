@@ -50,7 +50,8 @@
             android:name=".StartAppActivities.EnterDetailed"
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".MyMessages" />
-        <activity android:name=".SendMessage"></activity>
+        <activity android:name=".SendMessage" />
+        <activity android:name=".DetailedMessage"></activity>
     </application>
 
 </manifest>
