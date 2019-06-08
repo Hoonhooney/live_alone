@@ -3,16 +3,18 @@ package com.example.kante.live_alone.Classes;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class Message {
+public class Message implements Serializable {
     @Exclude
     public String id;
     public String sender_id;
     public String sender_nickname;
     public String receiver_id;
+    public String receiver_nickname;
     public String title;
     public String context;
     public String created_at;
@@ -67,6 +69,10 @@ public class Message {
         return status;
     }
 
+    public String getReceiver_nickname() {
+        return receiver_nickname;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -78,6 +84,7 @@ public class Message {
         result.put("context", context);
         result.put("created_at",created_at);
         result.put("status",status);
+        result.put("receiver_nickname",receiver_nickname);
         result.put("updated_at",updated_at);
         return result;
     }
