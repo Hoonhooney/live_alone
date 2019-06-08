@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
+import com.example.kante.live_alone.Fragments.FChat;
 import com.example.kante.live_alone.Fragments.FTrans;
 import com.example.kante.live_alone.MyMessages;
 import com.example.kante.live_alone.StartAppActivities.EnterDetailed;
@@ -75,7 +76,7 @@ public class HomeFeed extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        fr = new FCook();
+        fr = new FChat();
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,fr).commit();
 
         Button bCook = (Button) findViewById(R.id.cook);
@@ -94,6 +95,9 @@ public class HomeFeed extends AppCompatActivity {
     public void selectCategory(View view){
         fr = null;
         switch(view.getId()){
+            case R.id.chat:
+                fr = new FChat();
+                break;
             case R.id.cook:
                 fr = new FCook();
                 break;
