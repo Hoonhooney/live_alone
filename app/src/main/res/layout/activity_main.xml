@@ -37,7 +37,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:background="@drawable/my_button"
             android:text="이메일 인증 완료했어요!!"
+            android:textStyle="bold"
             android:theme="@style/ThemeOverlay.MyDarkButton" />
 
     </LinearLayout>

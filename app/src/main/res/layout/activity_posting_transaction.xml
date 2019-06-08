@@ -58,6 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
                     android:text="사진 업로드하기"
+                    android:textStyle="bold"
                     app:bootstrapBrand="primary"
                     app:bootstrapSize="lg"
                     app:buttonMode="regular"
@@ -136,7 +137,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="판매품 이름" />
+                        android:text="판매품 이름"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/text_pname"
@@ -167,7 +169,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="판매 가격" />
+                        android:text="판매 가격"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/text_cost"
@@ -210,7 +213,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="기타 정보" />
+                        android:text="기타 정보"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/inf"
@@ -237,9 +241,10 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:backgroundTint="@color/light_olive_green"
+                    android:background="@drawable/my_button"
                     android:text="내 정보"
                     android:textColor="@color/white"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

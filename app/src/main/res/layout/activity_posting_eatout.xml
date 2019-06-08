@@ -58,6 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
                     android:text="사진 업로드하기"
+                    android:textStyle="bold"
                     app:bootstrapBrand="primary"
                     app:bootstrapSize="lg"
                     app:buttonMode="regular"
@@ -107,7 +108,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="추천 음식점" />
+                        android:text="추천 음식점"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/text_title"
@@ -143,7 +145,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="음식 종류" />
+                        android:text="음식 종류"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -221,7 +224,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="추천 이유" />
+                        android:text="추천 이유"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/text_reason"
@@ -256,7 +260,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="기타 정보" />
+                android:text="기타 정보"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/inf"
@@ -287,9 +292,10 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:backgroundTint="@color/light_olive_green"
+                    android:background="@drawable/my_button"
                     android:text="내 정보"
                     android:textColor="@color/white"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

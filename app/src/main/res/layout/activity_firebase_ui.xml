@@ -34,7 +34,8 @@
         <TextView
             android:id="@+id/status"
             style="@style/ThemeOverlay.MyTextDetail"
-            android:text="로그인을 해 주세요!" />
+            android:text="로그인을 해 주세요!"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btn_goHomeFeed"
@@ -96,8 +97,11 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/my_button"
                 android:text="@string/sign_in"
+                android:textStyle="bold"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
 
             <Button
@@ -105,8 +109,11 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/my_button"
                 android:text="@string/create_account"
+                android:textStyle="bold"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
 
         </LinearLayout>
