@@ -48,6 +48,7 @@ public class EnterDetailed extends Activity {
         DocumentReference users = firebaseFirestore.collection("users").document(firebaseUser.getUid());
         Map<String, Object> docData = new HashMap<>();
         docData.put("nickname", nickname);
+        docData.put("user_id",firebaseUser.getUid());
         docData.put("school", school);
         batch.set(users, docData);
         batch.commit();
