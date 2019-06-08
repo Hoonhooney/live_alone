@@ -27,21 +27,6 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/mlp_text02"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_horizontal"
-        android:textAlignment="gravity"
-        android:textSize="18sp"
-        android:lineSpacingExtra="0.7sp"
-        android:textStyle="bold"
-        android:text="아직 좋아하는 게시글이 없네요ㅠㅠ"
-        android:visibility="gone"
-        android:textColor="@color/light_olive_green" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -62,9 +47,9 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/swipe_layout"
             android:layout_centerHorizontal="true"
-            android:visibility="gone" />
+            android:layout_alignBottom="@+id/swipe_layout"
+            android:visibility="visible" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -45,6 +45,7 @@
         <activity android:name=".MyMenu" />
         <activity android:name=".PostActivities.DetailedPost" />
         <activity android:name=".LikingPosts" />
+        <activity android:name=".MyPosts" />
         <activity
             android:name=".StartAppActivities.EnterDetailed"
             android:theme="@android:style/Theme.Dialog" />
