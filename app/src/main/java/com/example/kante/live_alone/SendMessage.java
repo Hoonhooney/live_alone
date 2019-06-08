@@ -4,15 +4,19 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kante.live_alone.Classes.Message;
+import com.example.kante.live_alone.Classes.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +31,8 @@ public class SendMessage extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
     private String receiver_id;
+    private String sender_nickname;
+    private String receiver_nickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,14 @@ public class SendMessage extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         receiver_id = getIntent().getStringExtra("receiver_id");
+        receiver_nickname = getIntent().getStringExtra("receiver_nickname");
+        firebaseFirestore.collection("users").document(firebaseAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User user = documentSnapshot.toObject(User.class);
+                sender_nickname = user.getNickname();
+            }
+        });
 
     }
 
@@ -52,24 +66,60 @@ public class SendMessage extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        WriteBatch batch = firebaseFirestore.batch();
-                        DocumentReference message = firebaseFirestore.collection("messages").document();
-                        Map<String, Object> docData = new HashMap<>();
-                        docData.put("id",message.getId());
-                        docData.put("sender_id", firebaseAuth.getUid());
-                        docData.put("receiver_id", receiver_id);
-                        docData.put("title", title.getText().toString());
-                        docData.put("context",context.getText().toString());
 
-                        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
-                        String format = s.format(new Date());
+                        firebaseFirestore.collection("messages").whereEqualTo("sender_id",firebaseAuth.getUid())
+                                .whereEqualTo("receiver_id", receiver_id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                                if(queryDocumentSnapshots.isEmpty()){
+                                    WriteBatch batch = firebaseFirestore.batch();
+                                    DocumentReference message = firebaseFirestore.collection("messages").document();
+                                    Map<String, Object> docData = new HashMap<>();
+                                    docData.put("id",message.getId());
+                                    docData.put("sender_id", firebaseAuth.getUid());
+                                    docData.put("receiver_id", receiver_id);
+                                    docData.put("sender_nickname",sender_nickname);
+                                    docData.put("receiver_nickname",receiver_nickname);
+                                    docData.put("title", title.getText().toString());
+                                    docData.put("context",context.getText().toString());
 
-                        docData.put("created_at",format);
-                        docData.put("status","active");
-                        batch.set(message, docData);
-                        batch.commit();
-                        Toast.makeText(getApplicationContext(),"쪽지보내기가 완료되었습니다.",Toast.LENGTH_LONG).show();
-                        finish();
+                                    SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
+                                    String format = s.format(new Date());
+
+                                    docData.put("created_at",format);
+                                    docData.put("status","active");
+                                    batch.set(message, docData);
+                                    batch.commit();
+                                    Toast.makeText(getApplicationContext(),"쪽지보내기가 완료되었습니다.",Toast.LENGTH_LONG).show();
+                                    finish();
+//                                }else{
+//                                    Message m = queryDocumentSnapshots.toObjects(Message.class).get(0);
+//
+//                                    WriteBatch batch = firebaseFirestore.batch();
+//                                    DocumentReference message = firebaseFirestore.collection("messages").document(m.getId()).collection("context").document();
+//                                    Map<String, Object> docData = new HashMap<>();
+//                                    docData.put("id",message.getId());
+//                                    docData.put("title", title.getText().toString());
+//                                    docData.put("context",context.getText().toString());
+//
+//                                    SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
+//                                    String format = s.format(new Date());
+//
+//                                    docData.put("created_at",format);
+//                                    docData.put("status","active");
+//                                    batch.set(message, docData);
+//                                    batch.commit();
+//                                    Toast.makeText(getApplicationContext(),"쪽지보내기가 완료되었습니다.",Toast.LENGTH_LONG).show();
+//                                    finish();
+//                                }
+                            }
+                        });
+
+
+
+
+
+
                     }
                 });
         builder.setNegativeButton("아니오",
