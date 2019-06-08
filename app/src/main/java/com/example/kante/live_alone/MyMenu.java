@@ -75,6 +75,14 @@ public class MyMenu extends AppCompatActivity {
             }
         });
 
+        Button goLikingPosts = findViewById(R.id.go_liking_posts);
+        goLikingPosts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyMenu.this, LikingPosts.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void restartApp(Context context) {
