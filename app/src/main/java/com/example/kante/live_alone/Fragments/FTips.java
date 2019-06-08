@@ -60,8 +60,8 @@ public class FTips extends Fragment {
         recyclerView.setHasFixedSize(true);
         mAdapter = new RecyclerAdapter(getContext(), mArrayList, R.layout.home_fragments);
 
-//        //데이터 정렬
-//        getListItems();
+        //데이터 정렬
+        getListItems();
 
         //스크롤
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -98,11 +98,11 @@ public class FTips extends Fragment {
         return v;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        getListItems();
-    }
+//    @Override
+//    public void onResume(){
+//        super.onResume();
+//        getListItems();
+//    }
 
     @Override
     public void onPause(){

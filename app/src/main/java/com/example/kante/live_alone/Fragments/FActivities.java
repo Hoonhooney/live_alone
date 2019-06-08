@@ -61,7 +61,7 @@ public class FActivities extends Fragment {
         mAdapter = new RecyclerAdapter(getContext(), mArrayList, R.layout.home_fragments);
 
 //        //데이터 정렬
-//        getListItems();
+        getListItems();
 
         //스크롤
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -98,11 +98,11 @@ public class FActivities extends Fragment {
         return v;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        getListItems();
-    }
+//    @Override
+//    public void onResume(){
+//        super.onResume();
+//        getListItems();
+//    }
 
     @Override
     public void onPause(){
