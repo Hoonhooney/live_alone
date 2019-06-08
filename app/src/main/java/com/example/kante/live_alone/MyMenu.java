@@ -14,6 +14,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.kante.live_alone.Classes.User;
+import com.example.kante.live_alone.HomeActivities.HomeFeed;
 import com.example.kante.live_alone.StartAppActivities.SplashScreen;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -155,6 +156,10 @@ public class MyMenu extends AppCompatActivity {
                         Intent intent = new Intent(MyMenu.this, MyMenu.class);
                         startActivity(intent);
                         finish();
+                        break;
+                    case R.id.messages:
+                        Intent i = new Intent(MyMenu.this, MyMessages.class);
+                        startActivity(i);
                         break;
                 }
                 return false;
