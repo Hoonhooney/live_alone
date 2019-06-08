@@ -1,8 +1,10 @@
 package com.example.kante.live_alone;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -62,19 +64,39 @@ public class MyMenu extends AppCompatActivity {
 
 //        getUser();
         text_nickname.setText(getIntent().getStringExtra("nickname"));
+
+        //로그아웃
         Button btn_logout = findViewById(R.id.button_logout);
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fbAuth = FirebaseAuth.getInstance();
-                fbAuth.signOut();
-                Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
-                finishAffinity();
+                if(!MyMenu.this.isFinishing()){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MyMenu.this);
+                    builder.setTitle("로그아웃");
+                    builder.setMessage("로그아웃 하시겠습니까?");
+                    builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            fbAuth = FirebaseAuth.getInstance();
+                            fbAuth.signOut();
+                            Intent intent = new Intent(MyMenu.this, SplashScreen.class);
+                            finishAffinity();
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                            startActivity(intent);
+                        }
+                    });
+                    builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }
+                    });
+                    builder.show();
+                }
             }
         });
 
+        //내가 쓴 게시글 보기
         Button goMyPosts = findViewById(R.id.my_posts);
         goMyPosts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +106,7 @@ public class MyMenu extends AppCompatActivity {
             }
         });
 
+        //내가 좋아하는 게시글 보기
         Button goLikingPosts = findViewById(R.id.go_liking_posts);
         goLikingPosts.setOnClickListener(new View.OnClickListener() {
             @Override
