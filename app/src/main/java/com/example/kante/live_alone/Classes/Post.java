@@ -20,6 +20,7 @@ public class Post {
     public String category;
     public String created_at;
     public Bitmap bitmap;
+    public String nickname;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -44,6 +45,7 @@ public class Post {
     public String getCategory() {return this.category;}
     public String getCreated_at() {return this.created_at;}
     public String getId(){ return this.id;}
+    public String getNickname(){ return this.nickname;}
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -52,6 +54,7 @@ public class Post {
         result.put("title", title);
         result.put("body", body);
         result.put("image_url", image_url);
+        result.put("nickname",nickname);
         return result;
     }
 
