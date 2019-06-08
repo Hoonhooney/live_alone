@@ -24,7 +24,9 @@ import com.example.kante.live_alone.Adapters.CommentAdapter;
 import com.example.kante.live_alone.Classes.Comment;
 import com.example.kante.live_alone.Classes.Like;
 import com.example.kante.live_alone.Classes.User;
+import com.example.kante.live_alone.HomeActivities.HomeFeed;
 import com.example.kante.live_alone.MyMenu;
+import com.example.kante.live_alone.MyMessages;
 import com.example.kante.live_alone.R;
 import com.example.kante.live_alone.SendMessage;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -65,6 +67,7 @@ public class DetailedPost extends AppCompatActivity {
     private Button findLocationButton;
     private EditText contextComment;
     private ImageView buttonLike;
+    private Button sendMessagebtn;
 
     private ListView commentListView;
     private CommentAdapter adapter;
@@ -104,7 +107,7 @@ public class DetailedPost extends AppCompatActivity {
         buttonLike = findViewById(R.id.btn_like);
         findLocationButton = findViewById(R.id.find_location);
         note = findViewById(R.id.note);
-
+        sendMessagebtn = findViewById(R.id.btn_send_message);
         Intent intent = getIntent();
         dTitle.setText(intent.getStringExtra("TITLE"));
         dBody.setText(intent.getStringExtra("BODY"));
@@ -143,6 +146,11 @@ public class DetailedPost extends AppCompatActivity {
             Glide.with(this).load(path).skipMemoryCache(true).into(dImage);
         }
 
+
+        if(!firebaseAuth.getUid().equals(intent.getStringExtra("posting_user_id"))){
+            sendMessagebtn.setVisibility(View.VISIBLE);
+        }
+
         commentListView = (ListView)findViewById(R.id.list_comments);
         //댓글 보이기
         getComments();
@@ -177,6 +185,10 @@ public class DetailedPost extends AppCompatActivity {
                     case R.id.go_mymenu:
                         Intent intent = new Intent(DetailedPost.this, MyMenu.class);
                         startActivity(intent);
+                        break;
+                    case R.id.messages: // TODO : 쪽지함으로
+                        Intent i = new Intent(DetailedPost.this, MyMessages.class);
+                        startActivity(i);
                         break;
                 }
                 return false;
@@ -441,6 +453,7 @@ public class DetailedPost extends AppCompatActivity {
     public void onClicksendMessage(View v){
         Intent intent = new Intent(this, SendMessage.class);
         intent.putExtra("receiver_id",getIntent().getStringExtra("posting_user_id"));
+        intent.putExtra("receiver_nickname",dUid.getText().toString());
         startActivity(intent);
     }
 
