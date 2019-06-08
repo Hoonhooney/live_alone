@@ -138,41 +138,49 @@ public class FChat extends Fragment {
     }
 
     public void getListItems() {
+        pgsBar.setVisibility(ProgressBar.VISIBLE);
         if (!mArrayList.isEmpty())
             mArrayList.clear();
-        Log.d("qpoqop", "whiatqwdqw?");
-        fs.collection("posts").whereEqualTo("category", "FChat").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if (queryDocumentSnapshots.isEmpty()) {
-                            Log.d("qpoqop", "whiat?");
-                            return;
-                        } else {
-                            types = queryDocumentSnapshots.toObjects(Post.class);
-                            for(int x = 0; x<types.size(); x++){
-                                String post_id = queryDocumentSnapshots.getDocuments().get(x).getId();
-                                types.get(x).withId(post_id);
-                            }
-                            types.sort(new CustomComparator().reversed());
-                            if (types.size() < 10) {
-                                for (int i = 0; i < types.size(); i++) {
-                                    mArrayList.add(types.get(i));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("qpoqop", "whiatqwdqw?");
+                fs.collection("posts").whereEqualTo("category", "FChat").get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                if (queryDocumentSnapshots.isEmpty()) {
+                                    Log.d("qpoqop", "whiat?");
+                                    return;
+                                } else {
+                                    types = queryDocumentSnapshots.toObjects(Post.class);
+                                    for(int x = 0; x<types.size(); x++){
+                                        String post_id = queryDocumentSnapshots.getDocuments().get(x).getId();
+                                        types.get(x).withId(post_id);
+                                    }
+                                    types.sort(new CustomComparator().reversed());
+                                    if (types.size() < 10) {
+                                        for (int i = 0; i < types.size(); i++) {
+                                            mArrayList.add(types.get(i));
+                                        }
+                                    } else {
+                                        for (int j = 0; j < 10; j++)
+                                            mArrayList.add(types.get(j));
+                                    }
+                                    recyclerView.setAdapter(mAdapter);
+                                    pgsBar.setVisibility(ProgressBar.GONE);
                                 }
-                            } else {
-                                for (int j = 0; j < 10; j++)
-                                    mArrayList.add(types.get(j));
                             }
-                            recyclerView.setAdapter(mAdapter);
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("qweqweqwe", "아무내용이없습니다");
-                    }
-                });
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("qweqweqwe", "아무내용이없습니다");
+                                pgsBar.setVisibility(ProgressBar.GONE);
+                            }
+                        });
+            }
+        }, 500);
     }
 
     public class CustomComparator implements Comparator<Post> {
