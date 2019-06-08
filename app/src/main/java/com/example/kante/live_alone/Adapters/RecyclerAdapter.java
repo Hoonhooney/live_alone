@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,15 +47,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private StorageReference storageRef;
     private FirebaseFirestore firestore;
     private FirebaseAuth firebaseAuth;
-    private String posting_user_id;
     private DocumentReference documentReference;
-    private List<User> users;
+    private List<User> users
 
     public RecyclerAdapter(Context context, List<Post> posts, int item_layout) {
         this.context = context;
         this.posts = posts;
         this.item_layout = item_layout;
 
+        firestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
 
     }
@@ -62,11 +64,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds, null);
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds, null);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://hcslivealone.appspot.com");
-        firestore = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
         // TODO : 여기에다가 likes 데이터 불러온거 저장해놓고 onBindViewHolder에서 settext만 해주면 될까?
         // TODO : users의 닉네임도 마찬가지
 
@@ -86,6 +86,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 //                break;
 //            }
 //        }
+
+        //TODO : 그냥 FCOOK 이런데서 불러올 때 포스트 객체에다가 닉네임 칼럼 추가해서 넘겨주는게 로딩 안걸리고 젤 좋은것 같다...
+        firestore.collection("users").document(post.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(!documentSnapshot.exists()){
+                    return;
+                }else{
+                    User user = documentSnapshot.toObject(User.class);
+//                    String nickname = user.getNickname();
+                    holder.posting_user_id.setText(user.getUser_id());
+//                    holder.feed_nickname.setText(nickname);
+                }
+            }
+        });
+
+        holder.feed_nickname.setText(post.getNickname());
+
+
         holder.title.setText(post.getTitle());
         holder.body.setText(post.getBody());
         if(post.getBody().length() > 200){
@@ -97,6 +116,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.post_category = post.getCategory();
 
         //like count 설정
+//        Like like = null;
+//        int likecount = 0;
+//        for(int i=0; i<likes.size(); i++){
+//            if(post.id.equals(likes.get(i).getPost_id())){
+//                likecount++;
+//            }
+//        }
+//
+//        if(like == null){
+//            holder.like_counts.setText(String.valueOf(0));
+//        }else{
+//            holder.like_counts.setText(String.valueOf(likecount));
+//        }
         firestore.collection("likes").whereEqualTo("post_id",post.id).whereEqualTo("status","active").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -124,19 +156,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 //        holder.feed_nickname.setText(user.getNickname());
 
         //리사이클러뷰 각각의 아이템에 유저 닉네임 보이도록 표시
-        firestore.collection("users").document(post.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(!documentSnapshot.exists()){
-                    return;
-                }else{
-                    User user = documentSnapshot.toObject(User.class);
-                    String nickname = user.getNickname();
-                    posting_user_id = user.getUser_id();
-                    holder.feed_nickname.setText(nickname);
-                }
-            }
-        });
 
         try{
             Date date = new SimpleDateFormat("yyyyMMddkkmmss").parse(post.getCreated_at());
@@ -177,6 +196,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private TextView like_counts;
         private ImageView like;
         private String post_category;
+        private TextView posting_user_id;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -189,6 +209,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             time = (TextView) itemView.findViewById(R.id.time);
             like_counts = itemView.findViewById(R.id.likes_count);
             like = itemView.findViewById(R.id.like);
+            posting_user_id = itemView.findViewById(R.id.posting_user_id);
 
 
             cardview.setOnClickListener(new View.OnClickListener() {
@@ -206,7 +227,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     intent.putExtra("TIME", pTime);
                     intent.putExtra("URL", url);
                     intent.putExtra("POSTID",post_id);
-                    intent.putExtra("posting_user_id",posting_user_id);
+                    intent.putExtra("posting_user_id",posting_user_id.getText().toString());
                     intent.putExtra("CATEGORY",post_category);
                     context.startActivity(intent);
                 }
