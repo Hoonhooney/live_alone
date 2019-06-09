@@ -1,4 +1,4 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.MessageActivities;
 
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.beardedhen.androidbootstrap.BootstrapLabel;
 import com.example.kante.live_alone.Classes.Message;
 import com.example.kante.live_alone.Classes.User;
+import com.example.kante.live_alone.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;

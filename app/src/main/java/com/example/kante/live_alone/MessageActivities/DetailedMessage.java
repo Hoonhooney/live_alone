@@ -1,4 +1,4 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.MessageActivities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapLabel;
 import com.example.kante.live_alone.Adapters.DetailedMessageAdapter;
-import com.example.kante.live_alone.Adapters.MessageAdapter;
 import com.example.kante.live_alone.Classes.Message;
 import com.example.kante.live_alone.Classes.User;
+import com.example.kante.live_alone.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;

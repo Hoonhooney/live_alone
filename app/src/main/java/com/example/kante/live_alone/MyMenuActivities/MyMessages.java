@@ -1,7 +1,6 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.MyMenuActivities;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -12,12 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.kante.live_alone.Adapters.CommentAdapter;
 import com.example.kante.live_alone.Adapters.MessageAdapter;
-import com.example.kante.live_alone.Classes.Comment;
 import com.example.kante.live_alone.Classes.Message;
-import com.example.kante.live_alone.PostActivities.DetailedPost;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.example.kante.live_alone.MessageActivities.DetailedMessage;
+import com.example.kante.live_alone.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;

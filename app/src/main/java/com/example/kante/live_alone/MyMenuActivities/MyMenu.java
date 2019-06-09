@@ -1,4 +1,4 @@
-package com.example.kante.live_alone;
+package com.example.kante.live_alone.MyMenuActivities;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,7 +14,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.kante.live_alone.Classes.User;
-import com.example.kante.live_alone.HomeActivities.HomeFeed;
+import com.example.kante.live_alone.R;
 import com.example.kante.live_alone.StartAppActivities.SplashScreen;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SendMessage">
+    tools:context=".MessageActivities.SendMessage">
 
     <com.beardedhen.androidbootstrap.BootstrapLabel
         android:id="@+id/send_message_label"

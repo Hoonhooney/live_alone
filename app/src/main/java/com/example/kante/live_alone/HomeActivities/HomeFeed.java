@@ -15,14 +15,14 @@ import android.widget.PopupMenu;
 
 import com.example.kante.live_alone.Fragments.FChat;
 import com.example.kante.live_alone.Fragments.FTrans;
-import com.example.kante.live_alone.MyMessages;
+import com.example.kante.live_alone.MyMenuActivities.MyMessages;
 import com.example.kante.live_alone.StartAppActivities.EnterDetailed;
 import com.example.kante.live_alone.Fragments.FActivities;
 import com.example.kante.live_alone.Fragments.FCook;
 import com.example.kante.live_alone.Fragments.FEatout;
 import com.example.kante.live_alone.Fragments.FRoom;
 import com.example.kante.live_alone.Fragments.FTips;
-import com.example.kante.live_alone.MyMenu;
+import com.example.kante.live_alone.MyMenuActivities.MyMenu;
 import com.example.kante.live_alone.PostActivities.Posting;
 import com.example.kante.live_alone.R;
 import com.google.android.gms.tasks.OnCompleteListener;

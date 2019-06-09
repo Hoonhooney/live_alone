@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapLabel;
 import com.example.kante.live_alone.Classes.User;
-import com.example.kante.live_alone.MyMenu;
+import com.example.kante.live_alone.MyMenuActivities.MyMenu;
 import com.example.kante.live_alone.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

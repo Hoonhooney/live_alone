@@ -24,11 +24,10 @@ import com.example.kante.live_alone.Adapters.CommentAdapter;
 import com.example.kante.live_alone.Classes.Comment;
 import com.example.kante.live_alone.Classes.Like;
 import com.example.kante.live_alone.Classes.User;
-import com.example.kante.live_alone.HomeActivities.HomeFeed;
-import com.example.kante.live_alone.MyMenu;
-import com.example.kante.live_alone.MyMessages;
+import com.example.kante.live_alone.MyMenuActivities.MyMenu;
+import com.example.kante.live_alone.MyMenuActivities.MyMessages;
 import com.example.kante.live_alone.R;
-import com.example.kante.live_alone.SendMessage;
+import com.example.kante.live_alone.MessageActivities.SendMessage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -148,6 +147,8 @@ public class DetailedPost extends AppCompatActivity {
 
 
         if(!firebaseAuth.getUid().equals(intent.getStringExtra("posting_user_id"))){
+            Log.d("qweqweqwe",intent.getStringExtra("posting_user_id"));
+            Log.d("qweqweqwe",firebaseAuth.getUid());
             sendMessagebtn.setVisibility(View.VISIBLE);
         }
 
