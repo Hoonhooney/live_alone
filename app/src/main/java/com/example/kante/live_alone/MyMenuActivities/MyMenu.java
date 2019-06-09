@@ -113,6 +113,7 @@ public class MyMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyMenu.this, LikingPosts.class);
+                intent.putExtra("nickname",text_nickname.getText().toString());
                 startActivity(intent);
             }
         });
@@ -152,11 +153,11 @@ public class MyMenu extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch(item.getItemId()){
-                    case R.id.go_mymenu:
-                        Intent intent = new Intent(MyMenu.this, MyMenu.class);
-                        startActivity(intent);
-                        finish();
-                        break;
+//                    case R.id.go_mymenu:
+//                        Intent intent = new Intent(MyMenu.this, MyMenu.class);
+//                        startActivity(intent);
+//                        finish();
+//                        break;
                     case R.id.messages:
                         Intent i = new Intent(MyMenu.this, MyMessages.class);
                         startActivity(i);

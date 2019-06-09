@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.kante.live_alone.Adapters.RecyclerAdapter;
 import com.example.kante.live_alone.Classes.Like;
 import com.example.kante.live_alone.Classes.Post;
+import com.example.kante.live_alone.HomeActivities.HomeFeed;
 import com.example.kante.live_alone.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -145,8 +146,13 @@ public class LikingPosts extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.go_mymenu:
                         Intent intent = new Intent(LikingPosts.this, MyMenu.class);
+                        intent.putExtra("nickname",getIntent().getStringExtra("nickname"));
                         startActivity(intent);
                         finish();
+                        break;
+                    case R.id.messages:
+                        Intent i = new Intent(LikingPosts.this, MyMessages.class);
+                        startActivity(i);
                         break;
                 }
                 return false;

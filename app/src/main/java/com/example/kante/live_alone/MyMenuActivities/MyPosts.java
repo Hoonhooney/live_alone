@@ -17,10 +17,13 @@ import android.widget.TextView;
 
 import com.example.kante.live_alone.Adapters.RecyclerAdapter;
 import com.example.kante.live_alone.Classes.Post;
+import com.example.kante.live_alone.Classes.User;
+import com.example.kante.live_alone.PostActivities.DetailedPost;
 import com.example.kante.live_alone.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -40,6 +43,7 @@ public class MyPosts extends AppCompatActivity {
     ProgressBar pgsBar;
 
     private TextView mpText01;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,13 @@ public class MyPosts extends AppCompatActivity {
         mAdapter = new RecyclerAdapter(this, posts, R.layout.activity_my_liking_posts);
 
         pgsBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        firestore.collection("users").document(firebaseAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user = documentSnapshot.toObject(User.class);
+            }
+        });
 
         //사용사자 쓴 게시물을 정렬
         makeList();
@@ -123,8 +134,13 @@ public class MyPosts extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.go_mymenu:
                         Intent intent = new Intent(MyPosts.this, MyMenu.class);
+                        intent.putExtra("nickname",user.getNickname());
                         startActivity(intent);
                         finish();
+                        break;
+                    case R.id.messages: // TODO : 쪽지함으로
+                        Intent i = new Intent(MyPosts.this, MyMessages.class);
+                        startActivity(i);
                         break;
                 }
                 return false;

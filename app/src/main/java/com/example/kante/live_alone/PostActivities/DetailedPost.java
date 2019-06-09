@@ -146,6 +146,8 @@ public class DetailedPost extends AppCompatActivity {
             Glide.with(this).load(path).skipMemoryCache(true).into(dImage);
         }
 
+        Log.d("qweqweqwe",intent.getStringExtra("posting_user_id"));
+        Log.d("qweqweqwe",firebaseAuth.getUid());
 
         if(!firebaseAuth.getUid().equals(intent.getStringExtra("posting_user_id"))){
             Log.d("qweqweqwe",intent.getStringExtra("posting_user_id"));
@@ -186,6 +188,7 @@ public class DetailedPost extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.go_mymenu:
                         Intent intent = new Intent(DetailedPost.this, MyMenu.class);
+                        intent.putExtra("nickname",user.getNickname());
                         startActivity(intent);
                         break;
                     case R.id.messages: // TODO : 쪽지함으로
