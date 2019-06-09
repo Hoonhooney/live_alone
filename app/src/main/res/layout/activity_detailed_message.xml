@@ -24,13 +24,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <ListView
                 android:id="@+id/detailed_message_listview"
                 android:layout_width="match_parent"
-                android:layout_height="513dp"
+                android:layout_height="match_parent"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="8dp">
 
@@ -41,18 +41,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_below="@id/detailed_message_linearlayout"
-
-        android:gravity="bottom"
 
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/context_in_detailed_message"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="match_parent"
             android:layout_weight="3"
             android:hint="쪽지 내용을 입력하세요"
             android:inputType="textPersonName" />
@@ -60,8 +57,9 @@
         <Button
             android:id="@+id/btn_sendmessage_in_detail"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="onClicksendMessageinDetail"
             android:text="보내기" />
     </LinearLayout>
 </RelativeLayout>
