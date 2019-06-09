@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +44,7 @@ public class DetailedMessage extends AppCompatActivity {
     private List<Message> new_messages;
     private DetailedMessageAdapter adapter;
     private BootstrapLabel bootstrapLabel;
-    private Button sendMessagebtn;
+    private ImageButton sendMessagebtn;
     private String target_id;
     private TextView context;
     private String receiver_nickname;
@@ -144,46 +145,49 @@ public class DetailedMessage extends AppCompatActivity {
     }
 
     public void onClicksendMessageinDetail(View v){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("쪽지 보내기");
-        builder.setMessage("쪽지를 보내시겠습니까?");
-        builder.setPositiveButton("예",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+        if(!context.getText().toString().isEmpty()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("쪽지 보내기");
+            builder.setMessage("쪽지를 보내시겠습니까?");
+            builder.setPositiveButton("예",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
 
 
-                        WriteBatch batch = firebaseFirestore.batch();
-                        DocumentReference message = firebaseFirestore.collection("messages").document();
-                        Map<String, Object> docData = new HashMap<>();
-                        docData.put("id",message.getId());
-                        docData.put("sender_id", firebaseAuth.getUid());
-                        docData.put("receiver_id", target_id);
-                        docData.put("sender_nickname",sender_nickname);
-                        docData.put("receiver_nickname",receiver_nickname);
-                        docData.put("context",context.getText().toString());
+                            WriteBatch batch = firebaseFirestore.batch();
+                            DocumentReference message = firebaseFirestore.collection("messages").document();
+                            Map<String, Object> docData = new HashMap<>();
+                            docData.put("id",message.getId());
+                            docData.put("sender_id", firebaseAuth.getUid());
+                            docData.put("receiver_id", target_id);
+                            docData.put("sender_nickname",sender_nickname);
+                            docData.put("receiver_nickname",receiver_nickname);
+                            docData.put("context",context.getText().toString());
 
-                        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
-                        String format = s.format(new Date());
+                            SimpleDateFormat s = new SimpleDateFormat("yyyyMMddkkmmss");
+                            String format = s.format(new Date());
 
-                        docData.put("created_at",format);
-                        docData.put("status","active");
-                        batch.set(message, docData);
-                        batch.commit();
-                        Toast.makeText(getApplicationContext(),"쪽지보내기가 완료되었습니다.",Toast.LENGTH_LONG).show();
-                        finish();
-                        startActivity(getIntent());
+                            docData.put("created_at",format);
+                            docData.put("status","active");
+                            batch.set(message, docData);
+                            batch.commit();
+                            Toast.makeText(getApplicationContext(),"쪽지보내기가 완료되었습니다.",Toast.LENGTH_LONG).show();
+                            finish();
+                            startActivity(getIntent());
 
 
-                    }
-                });
-        builder.setNegativeButton("아니오",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                });
-        builder.show();
+                        }
+                    });
+            builder.setNegativeButton("아니오",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
+                            finish();
+                            startActivity(getIntent());
+                        }
+                    });
+            builder.show();
+        }
     }
 
 }
