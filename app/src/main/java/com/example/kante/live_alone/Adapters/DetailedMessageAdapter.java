@@ -60,6 +60,7 @@ public class DetailedMessageAdapter extends BaseAdapter {
         TextView cBody = (TextView) convertView.findViewById(R.id.detailed_message_context);
         TextView cTime = (TextView) convertView.findViewById(R.id.detailed_message_send_time);
         LinearLayout linearLayout = convertView.findViewById(R.id.detailed_message_linearlayout);
+        LinearLayout item_detailed_message_layout = convertView.findViewById(R.id.item_detailed_message_layout);
         Message message = messages.get(position);
 
         if(message.getSender_id().equals(user.getUid())){
@@ -69,6 +70,7 @@ public class DetailedMessageAdapter extends BaseAdapter {
             uId.setGravity(Gravity.RIGHT);
             cTime.setGravity(Gravity.LEFT);
             cBody.setGravity(Gravity.RIGHT);
+            item_detailed_message_layout.setGravity(Gravity.RIGHT);
         }else{
             uId.setText(message.getSender_nickname());
         }
