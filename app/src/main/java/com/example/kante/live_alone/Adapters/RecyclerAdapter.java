@@ -48,7 +48,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private FirebaseFirestore firestore;
     private FirebaseAuth firebaseAuth;
     private DocumentReference documentReference;
-    private List<User> users
+    private List<User> users;
 
     public RecyclerAdapter(Context context, List<Post> posts, int item_layout) {
         this.context = context;
