@@ -21,9 +21,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center"
-        android:background="@color/bootstrap_brand_primary"
+        android:background="@drawable/my_button"
         android:onClick="onClickSendButton"
-        android:text="보내기" />
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="보내기"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/message_context"

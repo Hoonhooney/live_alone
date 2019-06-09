@@ -42,13 +42,15 @@
                         android:layout_weight="1"
                         android:gravity="left"
                         android:text="@string/hint_user_id"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/message_send_time"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
                         android:gravity="right"
@@ -65,14 +67,13 @@
                     android:text="context"
                     android:textSize="15sp" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_message_delete"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_gravity="right"
-                    android:fontFamily="monospace"
-                    android:text="삭제"
+                    android:background="@drawable/delete"
                     android:visibility="visible" />
             </LinearLayout>
 
