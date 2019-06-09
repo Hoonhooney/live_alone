@@ -191,7 +191,7 @@ public class DetailedPost extends AppCompatActivity {
                         intent.putExtra("nickname",user.getNickname());
                         startActivity(intent);
                         break;
-                    case R.id.messages: // TODO : 쪽지함으로
+                    case R.id.messages:
                         Intent i = new Intent(DetailedPost.this, MyMessages.class);
                         startActivity(i);
                         break;

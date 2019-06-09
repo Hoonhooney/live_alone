@@ -138,7 +138,7 @@ public class MyPosts extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                         break;
-                    case R.id.messages: // TODO : 쪽지함으로
+                    case R.id.messages:
                         Intent i = new Intent(MyPosts.this, MyMessages.class);
                         startActivity(i);
                         break;

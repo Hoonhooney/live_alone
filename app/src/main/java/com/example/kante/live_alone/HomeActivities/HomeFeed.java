@@ -139,7 +139,7 @@ public class HomeFeed extends AppCompatActivity {
                         intent.putExtra("nickname",nickname);
                         startActivity(intent);
                         break;
-                    case R.id.messages: // TODO : 쪽지함으로
+                    case R.id.messages:
                         Intent i = new Intent(HomeFeed.this, MyMessages.class);
                         startActivity(i);
                         break;
