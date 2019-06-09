@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -66,7 +67,7 @@ public class DetailedPost extends AppCompatActivity {
     private Button findLocationButton;
     private EditText contextComment;
     private ImageView buttonLike;
-    private Button sendMessagebtn;
+    private ImageButton sendMessagebtn;
 
     private ListView commentListView;
     private CommentAdapter adapter;

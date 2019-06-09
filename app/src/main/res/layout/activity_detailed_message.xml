@@ -32,7 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="8dp">
+                tools:layout_editor_absoluteY="8dp"
+                android:divider="@null">
 
             </ListView>
         </LinearLayout>
@@ -44,6 +45,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
 
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <EditText
@@ -54,12 +56,13 @@
             android:hint="쪽지 내용을 입력하세요"
             android:inputType="textPersonName" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_sendmessage_in_detail"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:onClick="onClicksendMessageinDetail"
-            android:text="보내기" />
+            android:background="@drawable/plane"
+            android:onClick="onClicksendMessageinDetail" />
     </LinearLayout>
 </RelativeLayout>
