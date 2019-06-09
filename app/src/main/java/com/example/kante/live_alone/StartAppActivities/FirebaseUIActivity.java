@@ -199,10 +199,21 @@ public class FirebaseUIActivity extends BaseActivity implements
         boolean valid = true;
 
         String email = mEmailField.getText().toString();
+        String[] univ_addr;
+        univ_addr = email.split("@");
+        String[] acoredu;
+        acoredu = univ_addr[1].split("\\.");
+
+        if(!(acoredu[1].equals("ac") || acoredu[1].equals("edu"))){
+            mEmailField.setError("국내 대학생만 가입 가능합니다!!.");
+            valid = false;
+        }
+
         if (TextUtils.isEmpty(email)) {
             mEmailField.setError("Required.");
             valid = false;
-        } else {
+        }
+        else {
             mEmailField.setError(null);
         }
 
