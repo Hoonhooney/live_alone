@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapLabel;
 import com.example.kante.live_alone.Classes.User;
 import com.example.kante.live_alone.MyMenu;
 import com.example.kante.live_alone.R;
@@ -66,6 +67,7 @@ public class Posting extends AppCompatActivity {
     private Uri filePath;
     private BootstrapButton btnChoose;
     private ImageView imageView;
+    private BootstrapLabel postingTitle;
 
 
     @Override
@@ -104,7 +106,8 @@ public class Posting extends AppCompatActivity {
 
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         users = mFirestore.collection("users").document(fbUser.getUid());
-
+        postingTitle = findViewById(R.id.posting_title);
+        changePostingTitle();
         getUserInfo(fbUser);
         postingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +161,9 @@ public class Posting extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+
+
     }
 
     private void getUserInfo(FirebaseUser user){
@@ -196,6 +202,25 @@ public class Posting extends AppCompatActivity {
             docData.put("created_at",format);
             batch.set(posts, docData);
             batch.commit();
+        }
+    }
+
+    public void changePostingTitle(){
+        String category = getIntent().getStringExtra("Category");
+        if(category.equals("FCook")){
+            postingTitle.setText("꿀 레시피 게시글 작성하기");
+        }else if(category.equals("FActivities")){
+            postingTitle.setText("교내/대외 활동 게시글 작성하기");
+        }else if(category.equals("FEatout")){
+            postingTitle.setText("음식점 추천 게시글 작성하기");
+        }else if(category.equals("FRoom")){
+            postingTitle.setText("방값 정보 게시글 작성하기");
+        }else if(category.equals("FTips")){
+            postingTitle.setText("생활 꿀팁 게시글 작성하기");
+        }else if(category.equals("FTrans")){
+            postingTitle.setText("중고품 거래 게시글 작성하기");
+        }else if(category.equals("FChat")){
+            postingTitle.setText("자유 게시판 게시글 작성하기");
         }
     }
 
