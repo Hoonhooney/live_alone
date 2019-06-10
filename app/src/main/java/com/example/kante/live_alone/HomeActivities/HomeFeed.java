@@ -7,10 +7,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 
 import com.example.kante.live_alone.Fragments.FChat;
@@ -34,6 +37,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class HomeFeed extends AppCompatActivity {
 
@@ -44,6 +48,7 @@ public class HomeFeed extends AppCompatActivity {
     private Fragment fr;
     private String nickname;
     private ArrayList<Button> buttons;
+    boolean visible = false;
 
     @Override
     protected void onStart() {
@@ -101,6 +106,52 @@ public class HomeFeed extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 goPosting();
+            }
+        });
+        Button btnSearch = (Button)findViewById(R.id.search);
+        final Button btnGoSearch = (Button)findViewById(R.id.goSearch);
+        final EditText searchingText = (EditText)findViewById(R.id.searchingText);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(visible){
+                    searchingText.setVisibility(EditText.GONE);
+                    btnGoSearch.setVisibility(EditText.GONE);
+                    visible = false;
+                }
+                else{
+                    searchingText.setVisibility(EditText.VISIBLE);
+                    btnGoSearch.setVisibility(EditText.VISIBLE);
+                    visible = true;
+                }
+            }
+        });
+//        btnGoSearch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(!searchingText.getText().toString().isEmpty()){
+//                    fr = new FChat();
+//                    String searchingWord = searchingText.getText().toString();
+//                    ((FChat)fr).getAdapter().filter(searchingWord);
+//                }
+//            }
+//        });
+        searchingText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String searchWord = searchingText.getText().toString();
+//                        .toLowerCase(Locale.getDefault());
+                ((FChat)fr).getAdapter().filter(searchWord);
             }
         });
     }

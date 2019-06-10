@@ -30,10 +30,12 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -47,6 +49,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private StorageReference storageRef;
     private FirebaseFirestore firestore;
     private FirebaseAuth firebaseAuth;
+    private ArrayList<Post> arrayList;
     private DocumentReference documentReference;
     private List<User> users;
 
@@ -58,6 +61,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         firestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
+        arrayList = new ArrayList<>();
+        arrayList.addAll(posts);
 
     }
 
@@ -176,6 +181,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             l.height =0;
             holder.image.setLayoutParams(l);
         }
+    }
+
+    //검색 기능
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        posts.clear();
+        if (charText.length() == 0) {
+            posts.addAll(arrayList);
+        } else {
+            for (Post p : arrayList) {
+                String t = p.getTitle();
+                String b = p.getBody();
+                String n = p.getNickname();
+                if (t.toLowerCase().contains(charText) ||
+                b.toLowerCase().contains(charText) ||
+                n.toLowerCase().contains(charText)) {
+                    posts.add(p);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override

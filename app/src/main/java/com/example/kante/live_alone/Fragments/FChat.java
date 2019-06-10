@@ -90,7 +90,6 @@ public class FChat extends Fragment {
             }
         });
 
-
         final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout)v.findViewById(R.id.swipe_layout);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -114,6 +113,10 @@ public class FChat extends Fragment {
         super.onPause();
         if(pgsBar != null)
             pgsBar.setVisibility(ProgressBar.GONE);
+    }
+
+    public RecyclerAdapter getAdapter(){
+        return this.mAdapter;
     }
 
     private void fetchData() {
