@@ -49,7 +49,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:text="Title"
-                        android:textSize="30sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
