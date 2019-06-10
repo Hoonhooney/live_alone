@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Live_Alone</string>
+    <string name="app_name">자취란 무엇인가</string>
 
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
@@ -76,7 +76,8 @@
     <string name="status_email_not_sent">Send link to your email to get started.</string>
     <string name="status_email_sent">Link sent, check your email to continue.</string>
     <string name="status_link_found">Link received, enter email to sign in.</string>
-
+    <string name="default_notification_channel_id">Channel ID</string>
+    <string name="default_notification_channel_name" translatable="true">Test</string>
     <string name="phone_title_text">Phone Number</string>
 
     <string name="twitter_status_fmt">Twitter User: %s</string>

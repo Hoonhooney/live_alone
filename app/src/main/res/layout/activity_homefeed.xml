@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".HomeFeed">
+    tools:context=".HomeActivities.HomeFeed">
 
     <include
         android:id="@+id/header"
@@ -24,8 +24,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <EditText
+            android:id="@+id/searchingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="검색어를 입력하세요"
+            android:inputType="textPersonName"
+            android:visibility="gone" />
         <TextView
-            android:id="@+id/school"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -56,10 +63,20 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/chat"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/chat"
+                        android:onClick="selectCategory" />
+
+                    <Button
                         android:id="@+id/cook"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/recipies"
                         android:onClick="selectCategory" />
 
@@ -67,7 +84,8 @@
                         android:id="@+id/room"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/roominfo"
                         android:onClick="selectCategory" />
 
@@ -75,7 +93,8 @@
                         android:id="@+id/activities"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/schoolact"
                         android:onClick="selectCategory" />
 
@@ -83,7 +102,8 @@
                         android:id="@+id/tips"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/tips"
                         android:onClick="selectCategory" />
 
@@ -91,16 +111,19 @@
                         android:id="@+id/eatout"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/eatout"
                         android:onClick="selectCategory" />
 
                     <Button
-                        android:id="@+id/button6"
+                        android:id="@+id/trans"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:layout_marginStart="20dp"
-                        android:background="@drawable/tips" />
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/trans"
+                        android:onClick="selectCategory" />
                 </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>

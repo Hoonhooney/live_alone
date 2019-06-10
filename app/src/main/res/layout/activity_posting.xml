@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Posting">
+    tools:context=".PostActivities.Posting">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,9 +22,10 @@
             android:layout_height="match_parent"
             android:background="@color/grey_300"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/xbuttonimage" />
+            app:srcCompat="@drawable/cross" />
 
         <com.beardedhen.androidbootstrap.BootstrapLabel
+            android:id="@+id/posting_title"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/bootstrap_dropdown_default_item_height"
             android:layout_marginLeft="1dp"
@@ -58,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
                     android:text="사진 업로드하기"
+                    android:textStyle="bold"
                     app:bootstrapBrand="primary"
                     app:bootstrapSize="lg"
                     app:buttonMode="regular"
@@ -140,20 +142,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-
-                <Button
-                    android:id="@+id/gotomymenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:backgroundTint="@color/light_olive_green"
-                    android:text="내 정보"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/btn_posting"

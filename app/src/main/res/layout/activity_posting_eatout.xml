@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Posting">
+    tools:context=".PostActivities.Posting">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,9 +22,10 @@
             android:layout_height="match_parent"
             android:background="@color/grey_300"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/xbuttonimage" />
+            app:srcCompat="@drawable/cross" />
 
         <com.beardedhen.androidbootstrap.BootstrapLabel
+            android:id="@+id/posting_title"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/bootstrap_dropdown_default_item_height"
             android:layout_marginLeft="1dp"
@@ -58,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
                     android:text="사진 업로드하기"
+                    android:textStyle="bold"
                     app:bootstrapBrand="primary"
                     app:bootstrapSize="lg"
                     app:buttonMode="regular"
@@ -107,7 +109,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="추천 음식점" />
+                        android:text="추천 음식점"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/text_title"
@@ -143,7 +146,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="음식 종류" />
+                        android:text="음식 종류"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -221,7 +225,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="추천 이유" />
+                        android:text="추천 이유"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/text_reason"
@@ -230,7 +235,8 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="추천 이유를 입력하세요"
-                        android:inputType="textPersonName"
+                        android:inputType="textMultiLine"
+                        android:scrollHorizontally="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.503"
                         app:layout_constraintStart_toStartOf="parent"
@@ -248,7 +254,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -256,7 +262,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="기타 정보" />
+                android:text="기타 정보"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/inf"
@@ -264,8 +271,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="이 음식점에 대한 기타 정보를 입력하세요(추천 메뉴, 가격대, 후기 등)"
-                android:inputType="textPersonName"
+                android:hint="(추천 메뉴, 가격대, 후기 등)"
+                android:inputType="textMultiLine"
+                android:maxLength="150"
+                android:scrollHorizontally="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintStart_toStartOf="parent"
@@ -278,20 +287,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-
-                <Button
-                    android:id="@+id/gotomymenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:backgroundTint="@color/light_olive_green"
-                    android:text="내 정보"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/btn_posting"

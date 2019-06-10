@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MessageActivities.SendMessage">
+
+    <com.beardedhen.androidbootstrap.BootstrapLabel
+        android:id="@+id/send_message_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bootstrapBrand="regular"
+        app:bootstrapHeading="h3"
+        android:text="sada">
+    </com.beardedhen.androidbootstrap.BootstrapLabel>
+
+    <Button
+        android:id="@+id/btn_sendmessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center"
+        android:background="@drawable/my_button"
+        android:onClick="onClickSendButton"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="보내기"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/message_context"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_margin="@dimen/bootstrap_h5_hori_padding"
+        android:ems="10"
+        android:hint="내용을 입력하세요"
+        android:inputType="textMultiLine" />
+</LinearLayout>

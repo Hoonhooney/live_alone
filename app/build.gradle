@@ -27,7 +27,8 @@ dependencies {
 
     // Required only if GitHub OAuth support is required
     implementation 'com.firebaseui:firebase-ui-auth-github:4.3.2'
-
+    //for push service
+    implementation 'com.google.firebase:firebase-messaging:17.3.3'
     //for Database
     implementation 'com.google.firebase:firebase-database:16.0.1'
 
