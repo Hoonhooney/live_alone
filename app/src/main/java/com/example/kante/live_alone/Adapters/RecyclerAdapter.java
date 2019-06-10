@@ -49,7 +49,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private StorageReference storageRef;
     private FirebaseFirestore firestore;
     private FirebaseAuth firebaseAuth;
-    private ArrayList<Post> arrayList;
+    public ArrayList<Post> arrayList;
     private DocumentReference documentReference;
     private List<User> users;
 

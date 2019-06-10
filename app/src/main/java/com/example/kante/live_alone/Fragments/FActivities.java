@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.ProgressBar;
 
 import com.example.kante.live_alone.Classes.Post;
+import com.example.kante.live_alone.HomeActivities.HomeFeed;
 import com.example.kante.live_alone.R;
 import com.example.kante.live_alone.Adapters.RecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class FActivities extends Fragment {
 
@@ -62,6 +66,25 @@ public class FActivities extends Fragment {
 
 //        //데이터 정렬
         getListItems();
+        //게시글 검색기능
+        ((HomeFeed)HomeFeed.context).searchingText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String searchWord = ((HomeFeed)HomeFeed.context).searchingText.getText().toString()
+                        .toLowerCase(Locale.getDefault());
+                mAdapter.filter(searchWord);
+            }
+        });
 
         //스크롤
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -134,8 +157,10 @@ public class FActivities extends Fragment {
 
     public void getListItems(){
         pgsBar.setVisibility(ProgressBar.VISIBLE);
-        if (!mArrayList.isEmpty())
+        if (!mArrayList.isEmpty()){
             mArrayList.clear();
+            mAdapter.arrayList.clear();
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -162,6 +187,7 @@ public class FActivities extends Fragment {
                                             mArrayList.add(types.get(j));
                                     }
                                     recyclerView.setAdapter(mAdapter);
+                                    mAdapter.arrayList.addAll(mArrayList);
                                     pgsBar.setVisibility(ProgressBar.GONE);
                                 }
                             }

@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.ProgressBar;
 
 import com.example.kante.live_alone.Adapters.RecyclerAdapter;
 import com.example.kante.live_alone.Classes.Post;
+import com.example.kante.live_alone.HomeActivities.HomeFeed;
 import com.example.kante.live_alone.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,11 +27,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class FChat extends Fragment {
     private FirebaseFirestore fs;
     //    static final int LIMIT = 50;
-    private ArrayList<Post> mArrayList = new ArrayList<>();
+    private ArrayList<Post> mArrayList;
     private List<Post> types;
     RecyclerView recyclerView;
     RecyclerAdapter mAdapter;
@@ -51,6 +55,8 @@ public class FChat extends Fragment {
 
         pgsBar = (ProgressBar) v.findViewById(R.id.progress_bar);
 
+        mArrayList = new ArrayList<>();
+
         //피드 카드뷰 생성
         recyclerView = (RecyclerView) v.findViewById(R.id.feeds);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -60,6 +66,25 @@ public class FChat extends Fragment {
 
         //데이터 정렬
         getListItems();
+        //게시글 검색기능
+        ((HomeFeed)HomeFeed.context).searchingText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String searchWord = ((HomeFeed)HomeFeed.context).searchingText.getText().toString()
+                        .toLowerCase(Locale.getDefault());
+                mAdapter.filter(searchWord);
+            }
+        });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -105,7 +130,6 @@ public class FChat extends Fragment {
 //    @Override
 //    public void onResume(){
 //        super.onResume();
-//        getListItems();
 //    }
 
     @Override
@@ -115,17 +139,13 @@ public class FChat extends Fragment {
             pgsBar.setVisibility(ProgressBar.GONE);
     }
 
-    public RecyclerAdapter getAdapter(){
-        return this.mAdapter;
-    }
-
     private void fetchData() {
         pgsBar.setVisibility(ProgressBar.VISIBLE);
         new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        int k = mArrayList.size();
-                        for (int i =0 ; i < 5; i++){
+            @Override
+            public void run() {
+                int k = mArrayList.size();
+                for (int i =0 ; i < 5; i++){
                     if(k + i < types.size()){
                         mArrayList.add(types.get(k + i));
                         mAdapter.notifyDataSetChanged();
@@ -137,13 +157,15 @@ public class FChat extends Fragment {
                     }
                 }
             }
-        }, 1000);
+            }, 1000);
     }
 
     public void getListItems() {
         pgsBar.setVisibility(ProgressBar.VISIBLE);
-        if (!mArrayList.isEmpty())
+        if (!mArrayList.isEmpty()){
             mArrayList.clear();
+            mAdapter.arrayList.clear();
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -163,14 +185,16 @@ public class FChat extends Fragment {
                                     }
                                     types.sort(new CustomComparator().reversed());
                                     if (types.size() < 10) {
-                                        for (int i = 0; i < types.size(); i++) {
-                                            mArrayList.add(types.get(i));
-                                        }
+//                                        for (int i = 0; i < types.size(); i++) {
+//                                            mArrayList.add(types.get(i));
+//                                        }
+                                        mArrayList.addAll(types);
                                     } else {
                                         for (int j = 0; j < 10; j++)
                                             mArrayList.add(types.get(j));
                                     }
                                     recyclerView.setAdapter(mAdapter);
+                                    mAdapter.arrayList.addAll(mArrayList);
                                     pgsBar.setVisibility(ProgressBar.GONE);
                                 }
                             }
