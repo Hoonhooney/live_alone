@@ -33,6 +33,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 public class HomeFeed extends AppCompatActivity {
 
     public static String TAG="HomeFeed";
@@ -41,6 +43,7 @@ public class HomeFeed extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private Fragment fr;
     private String nickname;
+    private ArrayList<Button> buttons;
 
     @Override
     protected void onStart() {
@@ -79,6 +82,16 @@ public class HomeFeed extends AppCompatActivity {
         fr = new FChat();
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,fr).commit();
 
+        buttons = new ArrayList<Button>();
+        buttons.add((Button)findViewById(R.id.chat));
+        buttons.add((Button)findViewById(R.id.cook));
+        buttons.add((Button)findViewById(R.id.room));
+        buttons.add((Button)findViewById(R.id.activities));
+        buttons.add((Button)findViewById(R.id.tips));
+        buttons.add((Button)findViewById(R.id.eatout));
+        buttons.add((Button)findViewById(R.id.trans));
+        buttons.get(0).setBackgroundResource(R.drawable.chat_2);
+
         Button bCook = (Button) findViewById(R.id.cook);
         Button bRoom = (Button) findViewById(R.id.room);
         Button bActivities = (Button) findViewById(R.id.activities);
@@ -93,28 +106,45 @@ public class HomeFeed extends AppCompatActivity {
     }
 
     public void selectCategory(View view){
+        buttons.get(0).setBackgroundResource(R.drawable.chat);
+        buttons.get(1).setBackgroundResource(R.drawable.recipies);
+        buttons.get(2).setBackgroundResource(R.drawable.roominfo);
+        buttons.get(3).setBackgroundResource(R.drawable.schoolact);
+        buttons.get(4).setBackgroundResource(R.drawable.tips);
+        buttons.get(5).setBackgroundResource(R.drawable.eatout);
+        buttons.get(6).setBackgroundResource(R.drawable.trans);
+
         fr = null;
         switch(view.getId()){
             case R.id.chat:
                 fr = new FChat();
+                Bundle b = new Bundle();
+                buttons.get(0).setBackgroundResource(R.drawable.chat_2);
                 break;
             case R.id.cook:
                 fr = new FCook();
+                buttons.get(1).setBackgroundResource(R.drawable.recipies_2);
                 break;
             case R.id.room:
                 fr = new FRoom();
+                buttons.get(2).setBackgroundResource(R.drawable.room_2);
                 break;
             case R.id.activities:
                 fr = new FActivities();
+                buttons.get(3).setBackgroundResource(R.drawable.activities_2);
                 break;
             case R.id.tips:
                 fr = new FTips();
+                buttons.get(4).setBackgroundResource(R.drawable.tips_2);
                 break;
             case R.id.eatout:
                 fr = new FEatout();
+                buttons.get(5).setBackgroundResource(R.drawable.eatout_2);
                 break;
             case R.id.trans:
                 fr = new FTrans();
+                buttons.get(6).setBackgroundResource(R.drawable.trans_2);
+                break;
         }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
