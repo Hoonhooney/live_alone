@@ -1,6 +1,7 @@
 package com.example.kante.live_alone.MyMenuActivities;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -47,7 +48,14 @@ public class MyMessages extends AppCompatActivity {
         noMessage = findViewById(R.id.no_item_message);
         cardView = findViewById(R.id.message_item);
 
-
+        final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout)findViewById(R.id.swipe_layout);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMessages();
+                swipeContainer.setRefreshing(false);
+            }
+        });
 
     }
 
