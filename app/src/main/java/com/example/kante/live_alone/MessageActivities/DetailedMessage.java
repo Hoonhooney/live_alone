@@ -2,6 +2,7 @@ package com.example.kante.live_alone.MessageActivities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -85,6 +86,15 @@ public class DetailedMessage extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 receiver_nickname = documentSnapshot.toObject(User.class).getNickname();
+            }
+        });
+
+        final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout)findViewById(R.id.swipe_layout);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMessages();
+                swipeContainer.setRefreshing(false);
             }
         });
 
