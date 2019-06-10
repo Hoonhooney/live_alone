@@ -145,15 +145,6 @@ public class Posting extends AppCompatActivity {
             }
         });
 
-        Button mymenu = findViewById(R.id.gotomymenu);
-        mymenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Posting.this, MyMenu.class);
-                startActivity(intent);
-            }
-        });
-
         ImageButton xButton = findViewById(R.id.xButtoninPosting);
         xButton.setOnClickListener(new View.OnClickListener() {
             @Override
