@@ -65,7 +65,9 @@ public class DetailedMessageAdapter extends BaseAdapter {
 
         if(message.getSender_id().equals(user.getUid())){
             uId.setText("나");
+            linearLayout.removeViewAt(1);
             linearLayout.removeViewAt(0);
+            linearLayout.addView(cTime,0);
             linearLayout.addView(uId,1);
             uId.setGravity(Gravity.RIGHT);
             cTime.setGravity(Gravity.LEFT);

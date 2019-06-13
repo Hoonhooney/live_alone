@@ -249,7 +249,7 @@ public class DetailedPost extends AppCompatActivity {
                             return;
                         } else{
                             comments = queryDocumentSnapshots.toObjects(Comment.class);
-                            comments.sort(new CommentComparator().reversed());
+                            comments.sort(new CommentComparator());
                             adapter = new CommentAdapter(DetailedPost.this, comments);
                             commentListView.setAdapter(adapter);
                             setListViewHeightBasedOnChildren(commentListView);
